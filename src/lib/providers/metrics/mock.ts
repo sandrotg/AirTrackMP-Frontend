@@ -8,7 +8,7 @@ export interface MetricsData extends MetricData {
 export const mockMetricsData: MetricsData[] = [
     {
         label: 'PM 2.5',
-        value: 65,
+        value: 67,
         unit: 'μg/m³',
         status: 'critical',
         change: '↑ 12% FROM PREV HOUR',
