@@ -16,12 +16,12 @@ export interface ProviderConfig {
 }
 
 export const providerConfig: ProviderConfig = {
-    alerts: 'mock',
+    alerts: 'api',
     nodes: 'mock',
     measurements: 'mock',
     predictions: 'mock',
     users: 'mock',
-    metrics: 'mock',
+    metrics: 'api',
     thresholds: 'mock',
     emergency: 'mock',
     system: 'mock',
