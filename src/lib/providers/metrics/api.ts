@@ -54,10 +54,10 @@ export function createMetricsApiProvider(): MetricsProvider {
 Fetching measurements from API at ${API_BASE}
 			`)
         const res = await fetch(`${API_BASE}/api/measurements`)
-        console.log({ res })
+        // console.log({ res })
         if (!res.ok) return []
         const data: ApiMeasurementWithNode[] = await res.json()
-        console.log({ data })
+        // console.log({ data })
         return data.map(({ node: _, ...m }) => m)
     }
 

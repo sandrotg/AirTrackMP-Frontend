@@ -7,6 +7,7 @@ export interface ProviderConfig {
     predictions: ProviderType
     users: ProviderType
     metrics: ProviderType
+    map: ProviderType
     thresholds: ProviderType
     emergency: ProviderType
     system: ProviderType
@@ -22,6 +23,7 @@ export const providerConfig: ProviderConfig = {
     predictions: 'mock',
     users: 'mock',
     metrics: 'api',
+    map: 'api',
     thresholds: 'mock',
     emergency: 'mock',
     system: 'mock',

@@ -1,24 +1,28 @@
+import { LiveAlerts } from '@/components/observatory/live-alerts'
 import { MapView } from '@/components/observatory/map-view'
 import { MetricCardsRow } from '@/components/observatory/metric-cards'
+import {
+    AirQualityChart,
+    CorrelationChart
+} from '@/components/observatory/charts'
 
 export default function DashboardPage() {
     return (
         <div className="space-y-4">
-            {/* Metrics Row */}
-            <MetricCardsRow />
-
             {/* Map and Alerts */}
-            <div className="grid grid-cols-3 gap-4">
-                <div className="col-span-2">
+            <div className="grid grid-cols-3 gap-4 ">
+                <div className="col-span-2 gap-y-4 flex flex-col">
+                    {/* Metrics Row */}
+                    <MetricCardsRow />
                     <MapView />
                 </div>
-                {/* <LiveAlerts /> */}
+                <LiveAlerts />
             </div>
 
             {/* Charts */}
             <div className="grid grid-cols-2 gap-4">
-                {/* <AirQualityChart /> */}
-                {/* <CorrelationChart /> */}
+                <AirQualityChart />
+                <CorrelationChart />
             </div>
 
             {/* Sensor Management */}
