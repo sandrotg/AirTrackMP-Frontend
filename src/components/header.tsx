@@ -1,9 +1,11 @@
 "use client"
 
 import Link from "next/link"
-import { Search, Settings, Bell, HelpCircle } from "lucide-react"
+import { Search, Settings, Bell, HelpCircle, LogOut } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { ModeToggle } from "@/components/mode-toggle"
+import { useSession, signOut } from "next-auth/react"
 
 interface HeaderProps {
   activeView: string
@@ -18,6 +20,10 @@ const navTabs = [
 ]
 
 export function Header({ activeView }: HeaderProps) {
+  const { data: session } = useSession()
+  const email = session?.user?.email || "ADMIN USER"
+  const initials = email.slice(0, 2).toUpperCase()
+
   return (
     <header className="flex h-14 items-center justify-between border-b border-border bg-card px-4">
       <div className="flex items-center gap-8">
@@ -57,15 +63,25 @@ export function Header({ activeView }: HeaderProps) {
         <button className="text-muted-foreground hover:text-foreground">
           <HelpCircle className="h-5 w-5" />
         </button>
+        <ModeToggle />
         <div className="flex items-center gap-2">
           <div className="text-right">
-            <p className="text-xs font-medium text-foreground">ADMIN USER</p>
-            <p className="text-[10px] text-muted-foreground">SYSTEM OVERSEER</p>
+            <p className="text-xs font-medium text-foreground">{email}</p>
+            <p className="text-[10px] text-muted-foreground">
+              {session?.user?.role || "SYSTEM OVERSEER"}
+            </p>
           </div>
           <Avatar className="h-8 w-8 border-2 border-primary">
             <AvatarImage src="/avatar.png" />
-            <AvatarFallback className="bg-primary text-primary-foreground text-xs">AU</AvatarFallback>
+            <AvatarFallback className="bg-primary text-primary-foreground text-xs">{initials}</AvatarFallback>
           </Avatar>
+          <button
+            onClick={() => signOut()}
+            className="text-muted-foreground hover:text-foreground ml-1"
+            title="Cerrar sesión"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </header>
