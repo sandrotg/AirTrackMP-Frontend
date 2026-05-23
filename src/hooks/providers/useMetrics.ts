@@ -1,36 +1,63 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { createMetricsProvider, MetricsData } from '@/lib/providers/metrics'
+import { 
+    createMetricsProvider, 
+    MetricsData,
+    ChartDataPoint,
+    CorrelationDataPoint,
+    HourlyDataPoint
+} from '@/lib/providers/metrics'
 
 interface UseMetricsResult {
     metrics: MetricsData[]
+    aqiData: ChartDataPoint[]
+    correlationData: CorrelationDataPoint[]
+    hourlyData: HourlyDataPoint[]
     loading: boolean
     error: Error | null
 }
 
 export function useMetrics(): UseMetricsResult {
     const [metrics, setMetrics] = useState<MetricsData[]>([])
+    const [aqiData, setAqiData] = useState<ChartDataPoint[]>([])
+    const [correlationData, setCorrelationData] = useState<CorrelationDataPoint[]>([])
+    const [hourlyData, setHourlyData] = useState<HourlyDataPoint[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<Error | null>(null)
     const provider = useMemo(() => createMetricsProvider(), [])
 
     useEffect(() => {
-        const mounted = true
+        let mounted = true
 
         async function loadData() {
             setLoading(true)
             try {
-                const data = await provider.getMetrics()
+                // Load all data in parallel
+                const [
+                    metricsData,
+                    aqi,
+                    correlation,
+                    hourly
+                ] = await Promise.all([
+                    provider.getMetrics(),
+                    provider.getAqiData(),
+                    provider.getCorrelationData(),
+                    provider.getHourlyData()
+                ])
+                
                 if (mounted) {
-                    setMetrics(data)
+                    setMetrics(metricsData)
+                    setAqiData(aqi)
+                    setCorrelationData(correlation)
+                    setHourlyData(hourly)
                 }
             } catch (err) {
                 if (mounted) {
                     setError(
                         err instanceof Error
                             ? err
-                            : new Error('Failed to load metrics')
+                            : new Error('Failed to load metrics data')
                     )
                 }
             } finally {
@@ -41,7 +68,11 @@ export function useMetrics(): UseMetricsResult {
         }
 
         loadData()
+
+        return () => {
+            mounted = false
+        }
     }, [provider])
 
-    return { metrics, loading, error }
+    return { metrics, aqiData, correlationData, hourlyData, loading, error }
 }

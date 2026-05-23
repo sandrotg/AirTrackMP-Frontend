@@ -16,7 +16,7 @@ import {
     Scatter,
     ZAxis
 } from 'recharts'
-import { useMeasurements } from '@/hooks/providers/useMeasurements'
+import { useMetrics } from '@/hooks/providers/useMetrics'
 
 const aqiData = [
     { time: '00:00', pm25: 35, pm10: 28 },
@@ -40,7 +40,7 @@ const correlationData = [
 ]
 
 export function AirQualityChart() {
-    const { aqiData, loading } = useMeasurements()
+    const { aqiData, loading } = useMetrics()
 
     if (loading || aqiData.length === 0) {
         return (
@@ -138,6 +138,16 @@ export function AirQualityChart() {
 }
 
 export function CorrelationChart() {
+    const { correlationData, loading } = useMetrics()
+
+    if (loading || correlationData.length === 0) {
+        return (
+            <div className="bg-card border border-border rounded-lg p-4 h-48 flex items-center justify-center">
+                <span className="text-muted-foreground">Loading...</span>
+            </div>
+        )
+    }
+
     return (
         <div className="bg-card border border-border rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
