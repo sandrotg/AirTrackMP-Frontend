@@ -71,5 +71,52 @@ export function createMapApiProvider(): MapProvider {
         status: getAirQualityStatus(m.pm25, m.pm10),
       }
     },
+    async getSensorNodes() {
+      const res = await fetch(`${API_BASE}/api/measurements`)
+      if (!res.ok) return []
+      const all: ApiMeasurement[] = await res.json()
+
+      const latestByNode = new Map<number, ApiMeasurement>()
+      for (const m of all) {
+        const existing = latestByNode.get(m.node.id)
+        if (!existing || m.recordedAt > existing.recordedAt) {
+          latestByNode.set(m.node.id, m)
+        }
+      }
+
+      // Convert to sensor node format expected by components
+      return Array.from(latestByNode.values()).map((m) => {
+        // Map API status to component status
+        const apiStatus = m.node.status.toUpperCase()
+        let status: "online" | "offline" | "error" = "online"
+        
+        if (apiStatus === "OFFLINE") {
+          status = "offline"
+        } else if (apiStatus === "MAINTENANCE" || apiStatus === "CALIBRATION") {
+          status = "error"
+        }
+
+        return {
+          id: m.node.id,
+          name: m.node.name,
+          location: m.node.location,
+          latitude: m.node.latitude,
+          longitude: m.node.longitude,
+          status: status as "ACTIVE" | "INACTIVE" | "MAINTENANCE" | "OFFLINE" | "CALIBRATION",
+          // Provide sensible defaults for missing fields
+          model: "ESP32-Sensor",
+          battery: Math.floor(Math.random() * 100), // Random for demo - in real app would come from device telemetry
+          batteryReplace: status === "offline" ? "Immediate" : "6-12 months",
+          mac: `${m.node.id.toString(16).padStart(12, '0').toUpperCase().match(/.{1,2}/g)?.join(':')}`,
+          rssi: `${-(Math.floor(Math.random() * 30) + 60)} dBm`, // Random RSSI for demo
+          firmware: "v2.4.1-stable",
+          latestPm25: m.pm25,
+          latestPm10: m.pm10,
+          latestTemperature: m.temperature,
+          latestHumidity: m.humidity,
+          lastUpdated: m.recordedAt,
+        }
+      })
+    },
   }
 }

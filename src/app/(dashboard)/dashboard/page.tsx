@@ -5,6 +5,7 @@ import {
     AirQualityChart,
     CorrelationChart
 } from '@/components/observatory/charts'
+import { SensorNodeManagement } from '@/components/observatory/sensor-nodes'
 
 export default function DashboardPage() {
     return (
@@ -26,7 +27,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Sensor Management */}
-            {/* <SensorNodeManagement /> */}
+            <SensorNodeManagement />
 
             {/* Footer Status */}
             <div className="flex items-center justify-between py-2 px-4 bg-card border border-border rounded-lg text-xs">
