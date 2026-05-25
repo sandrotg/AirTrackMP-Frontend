@@ -192,7 +192,13 @@ export function IAForecastingView() {
                                         className="flex gap-3"
                                     >
                                         <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center shrink-0">
-                                            <factor.icon className="w-4 h-4 text-cyan-400" />
+                                            {(() => {
+                                                const Icon =
+                                                    factor.icon ?? Activity
+                                                return (
+                                                    <Icon className="w-4 h-4 text-cyan-400" />
+                                                )
+                                            })()}
                                         </div>
                                         <div>
                                             <h4 className="text-sm font-medium text-foreground mb-1">
