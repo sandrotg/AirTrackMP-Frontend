@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import {
     LayoutDashboard,
-    Globe,
     Radio,
     BarChart3,
     BrainCircuit,
@@ -17,7 +16,6 @@ import {
     Server,
     Users,
     Settings,
-    Cloud,
     Terminal,
     History,
     Database

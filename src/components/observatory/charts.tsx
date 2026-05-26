@@ -1,7 +1,6 @@
 'use client'
 
 import {
-    LineChart,
     Line,
     XAxis,
     YAxis,
@@ -232,18 +231,6 @@ export function CorrelationChart() {
     )
 }
 
-const pm25HumidityData = [
-    { time: '00:00', pm25: 80, humidity: 45 },
-    { time: '03:00', pm25: 90, humidity: 50 },
-    { time: '06:00', pm25: 120, humidity: 55 },
-    { time: '09:00', pm25: 150, humidity: 60 },
-    { time: '12:00', pm25: 180, humidity: 70 },
-    { time: '15:00', pm25: 160, humidity: 75 },
-    { time: '18:00', pm25: 140, humidity: 80 },
-    { time: '21:00', pm25: 100, humidity: 70 },
-    { time: '23:59', pm25: 90, humidity: 60 }
-]
-
 export function AnalyticsChart() {
     const { correlationData, loading } = useAnalytics()
 
@@ -383,15 +370,6 @@ export function AnalyticsChart() {
         </div>
     )
 }
-
-const scatterData = [
-    { x: 20, y: 30, z: 100 },
-    { x: 35, y: 45, z: 150 },
-    { x: 50, y: 60, z: 200 },
-    { x: 65, y: 40, z: 120 },
-    { x: 80, y: 70, z: 180 },
-    { x: 45, y: 80, z: 250 }
-]
 
 export function ScatterPlotChart() {
     const { correlationData, loading } = useAnalytics()

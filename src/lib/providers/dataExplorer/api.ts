@@ -1,5 +1,5 @@
 import { DataExplorerProvider } from "./provider"
-import { WeeklyDataPoint, ScatterDataPoint, mockWeeklyData, mockScatterData } from "./mock"
+import { mockWeeklyData, mockScatterData } from "./mock"
 import { getApiToken } from "@/lib/auth-token"
 import { createMetricsProvider } from "@/lib/providers/metrics"
 

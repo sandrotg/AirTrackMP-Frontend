@@ -6,9 +6,7 @@ import {
     RefreshCw,
     FileText,
     Table,
-    Copy,
-    TrendingDown,
-    TrendingUp
+    Copy
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {

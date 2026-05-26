@@ -3,9 +3,7 @@
 import { useState } from 'react'
 import {
     Cloud,
-    Server,
     Database,
-    Cpu,
     Settings2,
     Trash2,
     HardDrive,

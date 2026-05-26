@@ -3,6 +3,14 @@ import Credentials from "next-auth/providers/credentials"
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
 
+interface AuthUser {
+  id: string
+  email: string
+  name: string
+  role: string
+  apiToken: string
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Credentials({
@@ -44,8 +52,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.apiToken = (user as any).apiToken
-        token.role = (user as any).role
+        const authUser = user as AuthUser
+        token.apiToken = authUser.apiToken
+        token.role = authUser.role
       }
       return token
     },

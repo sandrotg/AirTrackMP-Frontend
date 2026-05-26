@@ -1,5 +1,5 @@
 import { UsersProvider } from "./provider"
-import { UserData, AuditLogEntry } from "./mock"
+import { UserData } from "./mock"
 import { getApiToken } from "@/lib/auth-token"
 
 interface ApiUser {

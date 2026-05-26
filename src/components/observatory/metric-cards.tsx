@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils'
 import {
     Thermometer,
     Droplets,
-    Wind,
     TrendingUp,
     TrendingDown
 } from 'lucide-react'

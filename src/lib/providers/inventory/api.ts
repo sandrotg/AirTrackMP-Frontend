@@ -1,5 +1,5 @@
 import { InventoryProvider } from "./provider"
-import { InventoryNode, CommandHistoryEntry } from "./mock"
+import { InventoryNode } from "./mock"
 import { getApiToken } from "@/lib/auth-token"
 
 interface ApiNode {

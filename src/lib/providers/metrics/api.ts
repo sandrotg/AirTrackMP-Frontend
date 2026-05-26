@@ -1,4 +1,4 @@
-import { MetricsData, MeasurementRecord } from './mock'
+import { MeasurementRecord } from './mock'
 import { MetricsProvider } from './provider'
 
 interface ApiMeasurement {
@@ -66,7 +66,7 @@ export function createMetricsApiProvider(authToken: string | null = null): Metri
           if (!res.ok) return []
           const data: ApiMeasurementWithNode[] = await res.json()
           // console.log({ data })
-          return data.map(({ node: _, ...m }) => m)
+          return data.map(({ node: _node, ...m }) => m)
       }
   
       return {

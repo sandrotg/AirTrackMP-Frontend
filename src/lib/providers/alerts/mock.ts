@@ -44,9 +44,7 @@ export const mockAlerts: AlertLog[] = [
   },
 ]
 
-export interface AlertsMockProvider extends BaseProvider<AlertLog> {}
-
-export function createAlertsMockProvider(): AlertsMockProvider {
+export function createAlertsMockProvider(): BaseProvider<AlertLog> {
   return {
     type: "mock",
     async getAll() {

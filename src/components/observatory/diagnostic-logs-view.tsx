@@ -279,7 +279,7 @@ export function DiagnosticLogsView() {
 
                         <div className="border-t border-border pt-4">
                             <p className="text-xs text-primary mb-2">
-                                // Decoded JSON Packet
+                                {'// Decoded JSON Packet'}
                             </p>
                             <pre className="text-xs text-muted-foreground whitespace-pre-wrap">
                                 {decodedJson}

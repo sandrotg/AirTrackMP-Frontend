@@ -1,5 +1,4 @@
 import { SystemProvider } from "./provider"
-import { ResourceDataPoint, ContainerHealth, DiagnosticLogEntry } from "./mock"
 import { getApiToken } from "@/lib/auth-token"
 
 export function createSystemApiProvider(): SystemProvider {
@@ -13,7 +12,6 @@ export function createSystemApiProvider(): SystemProvider {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (!res.ok) return []
-      const nodes = await res.json()
       return Array.from({ length: 6 }, (_, i) => ({
         time: `${String(i * 4).padStart(2, "0")}:00`,
         cpu: 30 + Math.floor(Math.random() * 50),

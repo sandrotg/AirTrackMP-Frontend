@@ -17,7 +17,7 @@ export function useSensorNodes(): UseSensorNodesResult {
   const [error, setError] = useState<Error | null>(null)
   const [refreshKey, setRefreshKey] = useState(0)
   const token = getApiToken()
-  const provider = useMemo(() => createMapProvider(token), [])
+  const provider = useMemo(() => createMapProvider(token), [token])
 
   const refresh = useCallback(() => setRefreshKey((k) => k + 1), [])
 

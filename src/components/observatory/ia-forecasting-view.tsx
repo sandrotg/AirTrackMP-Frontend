@@ -1,10 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import {
     AlertTriangle,
-    Cloud,
-    Car,
     FileText,
     Activity,
     Globe
@@ -16,7 +13,6 @@ import { usePredictions } from '@/hooks/providers/usePredictions'
 export function IAForecastingView() {
     const { predictionData, probabilityZones, influenceFactors, loading } =
         usePredictions()
-    const [activeTab] = useState('forecasting')
 
     if (loading) {
         return (

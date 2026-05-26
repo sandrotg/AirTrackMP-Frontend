@@ -2,13 +2,10 @@
 
 import { useState } from 'react'
 import {
-    Bell,
-    Mail,
     Webhook,
     Save,
     Pencil,
     CheckCircle,
-    RefreshCw,
     Settings2,
     History
 } from 'lucide-react'

@@ -1,5 +1,5 @@
 import { ThresholdsProvider } from "./provider"
-import { NormativeOption, ThresholdLevel, NotificationChannel, ValidationLog } from "./mock"
+import { ThresholdLevel, NotificationChannel } from "./mock"
 import { getApiToken } from "@/lib/auth-token"
 import { Bell, Mail, Webhook, CheckCircle, RefreshCw, Settings2 } from "lucide-react"
 

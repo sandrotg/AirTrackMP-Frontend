@@ -17,10 +17,8 @@ import {
     YAxis,
     ResponsiveContainer,
     Tooltip,
-    Legend,
     ScatterChart,
-    Scatter,
-    ZAxis
+    Scatter
 } from 'recharts'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useDataExplorer } from '@/hooks/providers/useDataExplorer'

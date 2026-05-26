@@ -28,7 +28,7 @@ export function useMetrics(): UseMetricsResult {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<Error | null>(null)
     const token = getApiToken()
-    const provider = useMemo(() => createMetricsProvider(token), [])
+    const provider = useMemo(() => createMetricsProvider(token), [token])
 
     useEffect(() => {
         let mounted = true

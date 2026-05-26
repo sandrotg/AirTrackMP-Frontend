@@ -1,5 +1,5 @@
 import { PredictionsProvider } from "./provider"
-import { PredictionDataPoint, ProbabilityZone, InfluenceFactor, ForecastingData } from "./mock"
+
 import { getApiToken } from "@/lib/auth-token"
 
 interface ApiPrediction {
