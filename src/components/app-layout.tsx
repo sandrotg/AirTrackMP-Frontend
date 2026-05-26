@@ -6,7 +6,6 @@ import { Header } from '@/components/header'
 
 const navItems = [
     { id: 'dashboard', label: 'DASHBOARD' },
-    { id: 'map', label: 'MAP VIEW' },
     { id: 'network', label: 'SENSOR NETWORK' },
     { id: 'analytics', label: 'ANALYTICS' },
     { id: 'forecasting', label: 'IA FORECASTING' },
