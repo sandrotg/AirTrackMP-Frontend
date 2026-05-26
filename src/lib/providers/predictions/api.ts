@@ -85,7 +85,7 @@ export function createPredictionsApiProvider(): PredictionsProvider {
       return Array.from(zonesMap.entries()).map(([name, stats]) => ({
         name,
         probability: Math.min(100, Math.round((stats.riskSum / stats.count) * 25)),
-        color: stats.riskSum / stats.count > 2.5 ? "bg-red-500" : "bg-cyan-400",
+        color: stats.riskSum / stats.count > 2.5 ? "bg-status-unhealthy" : "bg-primary",
       }))
     },
     async getInfluenceFactors() {

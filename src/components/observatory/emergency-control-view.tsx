@@ -86,18 +86,18 @@ export function EmergencyControlView() {
             {/* Early Warning Banner */}
             <div className="bg-card rounded-lg border border-border p-4 mb-6 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full bg-orange-500 animate-pulse" />
+                    <div className="w-3 h-3 rounded-full bg-status-sensitive animate-pulse" />
                     <div>
-                        <h2 className="text-orange-400 font-semibold">
+                        <h2 className="text-status-sensitive font-semibold">
                             Early Warning Active
                         </h2>
-                        <p className="text-sm text-orange-400/70">
+                        <p className="text-sm text-status-sensitive/70">
                             SYSTEM MONITORING ELEVATED THREAT LEVEL IN SECTOR
                             7-G
                         </p>
                     </div>
                 </div>
-                <button className="bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 px-4 py-2 rounded-lg border border-orange-500/30 transition-colors font-medium">
+                <button className="bg-status-sensitive/20 hover:bg-status-sensitive/30 text-status-sensitive px-4 py-2 rounded-lg border border-status-sensitive/30 transition-colors font-medium">
                     BROADCAST UPDATE
                 </button>
             </div>
@@ -141,7 +141,7 @@ export function EmergencyControlView() {
                                     onClick={() => setAlertFilter('critical')}
                                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                                         alertFilter === 'critical'
-                                            ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
+                                            ? 'bg-primary/20 text-primary border border-primary/30'
                                             : 'text-muted-foreground hover:text-foreground'
                                     }`}
                                 >
@@ -184,7 +184,7 @@ export function EmergencyControlView() {
                                                 className="border-b border-border/50 hover:bg-muted/30 transition-colors"
                                             >
                                                 <td className="py-4 px-4">
-                                                    <span className="text-cyan-400 font-mono text-sm">
+                                                    <span className="text-primary font-mono text-sm">
                                                         {alert.nodeId}
                                                     </span>
                                                 </td>
@@ -193,7 +193,7 @@ export function EmergencyControlView() {
                                                 </td>
                                                 <td className="py-4 px-4">
                                                     <span
-                                                        className={`font-mono text-sm ${alert.status === 'CRITICAL' ? 'text-red-400' : 'text-yellow-400'}`}
+                                                        className={`font-mono text-sm ${alert.status === 'CRITICAL' ? 'text-status-unhealthy' : 'text-status-moderate'}`}
                                                     >
                                                         {alert.value}
                                                     </span>
@@ -206,8 +206,8 @@ export function EmergencyControlView() {
                                                         className={`px-2 py-1 rounded text-xs font-semibold ${
                                                             alert.status ===
                                                             'CRITICAL'
-                                                                ? 'bg-red-500/20 text-red-400'
-                                                                : 'bg-yellow-500/20 text-yellow-400'
+                                                                ? 'bg-status-unhealthy/20 text-status-unhealthy'
+                                                                : 'bg-status-moderate/20 text-status-moderate'
                                                         }`}
                                                     >
                                                         {alert.status}
@@ -239,14 +239,14 @@ export function EmergencyControlView() {
                                         <Line
                                             type="monotone"
                                             dataKey="pm25"
-                                            stroke="#22d3ee"
+                                            stroke="var(--primary)"
                                             strokeWidth={2}
                                             dot={false}
                                         />
                                         <Line
                                             type="monotone"
                                             dataKey="temp"
-                                            stroke="#facc15"
+                                            stroke="var(--status-moderate)"
                                             strokeWidth={2}
                                             strokeDasharray="5 5"
                                             dot={false}
@@ -257,11 +257,11 @@ export function EmergencyControlView() {
 
                             <div className="flex items-center justify-center gap-6 mt-4">
                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                    <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
+                                    <span className="w-2 h-2 rounded-full bg-primary"></span>
                                     PM2.5
                                 </div>
                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                    <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
+                                    <span className="w-2 h-2 rounded-full bg-status-moderate"></span>
                                     TEMP
                                 </div>
                             </div>
@@ -319,7 +319,7 @@ export function EmergencyControlView() {
                             <h3 className="text-lg font-semibold text-foreground uppercase tracking-wider">
                                 Response Protocol
                             </h3>
-                            <span className="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-xs rounded border border-cyan-500/30 font-medium">
+                            <span className="px-3 py-1 bg-primary/20 text-primary text-xs rounded border border-primary/30 font-medium">
                                 AUTO-PILOT
                             </span>
                         </div>
@@ -327,8 +327,8 @@ export function EmergencyControlView() {
                         <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">
                             SELECTED THREAT
                         </p>
-                        <div className="bg-cyan-500/20 rounded-lg p-4 mb-6 border border-cyan-500/30">
-                            <p className="text-sm text-cyan-400 font-medium">
+                        <div className="bg-primary/20 rounded-lg p-4 mb-6 border border-primary/30">
+                            <p className="text-sm text-primary font-medium">
                                 PM2.5 Spike: Harbor District
                             </p>
                         </div>
@@ -342,7 +342,7 @@ export function EmergencyControlView() {
                                     }
                                     className={`p-4 rounded-lg cursor-pointer transition-colors ${
                                         selectedProtocol === protocol.id
-                                            ? 'bg-muted border border-cyan-500/30'
+                                            ? 'bg-muted border border-primary/30'
                                             : 'bg-muted/50 border border-transparent hover:border-border'
                                     }`}
                                 >
@@ -350,13 +350,13 @@ export function EmergencyControlView() {
                                         <div
                                             className={`w-4 h-4 rounded-full border-2 mt-0.5 flex items-center justify-center ${
                                                 selectedProtocol === protocol.id
-                                                    ? 'border-cyan-400'
+                                                    ? 'border-primary'
                                                     : 'border-muted-foreground'
                                             }`}
                                         >
                                             {selectedProtocol ===
                                                 protocol.id && (
-                                                <div className="w-2 h-2 rounded-full bg-cyan-400" />
+                                                <div className="w-2 h-2 rounded-full bg-primary" />
                                             )}
                                         </div>
                                         <div>
@@ -372,14 +372,14 @@ export function EmergencyControlView() {
                             ))}
                         </div>
 
-                        <button className="mt-6 w-full bg-cyan-500 hover:bg-cyan-600 text-background font-semibold px-4 py-3 rounded-lg transition-colors">
+                        <button className="mt-6 w-full bg-primary hover:bg-primary/80 text-primary-foreground font-semibold px-4 py-3 rounded-lg transition-colors">
                             EXECUTE SELECTED ACTIONS
                         </button>
                     </div>
 
                     {/* Node Location Map */}
                     <div className="bg-card rounded-lg border border-border overflow-hidden">
-                        <div className="h-48 bg-linear-to-br from-orange-900/20 to-background relative">
+                        <div className="h-48 bg-linear-to-br from-status-sensitive/20 to-background relative">
                             <div className="absolute inset-0 opacity-30">
                                 <svg
                                     viewBox="0 0 200 100"
@@ -402,7 +402,7 @@ export function EmergencyControlView() {
                             </div>
                         </div>
                         <div className="p-4">
-                            <p className="text-xs text-cyan-400 uppercase tracking-wider mb-1">
+                            <p className="text-xs text-primary uppercase tracking-wider mb-1">
                                 NODE LOCATION
                             </p>
                             <h3 className="text-lg font-semibold text-foreground">

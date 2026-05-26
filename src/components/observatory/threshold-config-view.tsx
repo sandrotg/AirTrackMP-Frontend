@@ -105,7 +105,7 @@ export function ThresholdConfigView() {
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                        <span className="w-2 h-2 rounded-full bg-status-good"></span>
                         <span className="text-sm text-foreground">
                             Current Rules: Active
                         </span>
@@ -132,9 +132,9 @@ export function ThresholdConfigView() {
                                 key={option.id}
                                 onClick={() => setSelectedNormative(option.id)}
                                 className={`p-4 rounded-lg cursor-pointer transition-colors ${
-                                    selectedNormative === option.id
-                                        ? 'bg-cyan-500/20 border border-cyan-500/30'
-                                        : 'bg-muted/50 border border-transparent hover:border-border'
+                                        selectedNormative === option.id
+                                            ? 'bg-primary/20 border border-primary/30'
+                                            : 'bg-muted/50 border border-transparent hover:border-border'
                                 }`}
                             >
                                 <p
@@ -160,7 +160,7 @@ export function ThresholdConfigView() {
                         <h3 className="text-lg font-semibold text-foreground uppercase tracking-wider">
                             Custom Threshold Grid (mg/m³)
                         </h3>
-                        <button className="flex items-center gap-2 text-cyan-400 text-sm hover:text-cyan-300 transition-colors">
+                        <button className="flex items-center gap-2 text-primary text-sm hover:text-primary/80 transition-colors">
                             <Save className="w-4 h-4" />
                             COMMIT CHANGES
                         </button>
@@ -198,7 +198,7 @@ export function ThresholdConfigView() {
                                         </td>
                                         <td className="py-4 px-2 text-center">
                                             <span
-                                                className={`font-mono text-sm ${index === 0 ? 'text-green-400' : 'text-muted-foreground'}`}
+                                                className={`font-mono text-sm ${index === 0 ? 'text-status-good' : 'text-muted-foreground'}`}
                                             >
                                                 {level.lowerBound}
                                             </span>
@@ -207,7 +207,7 @@ export function ThresholdConfigView() {
                                             <input
                                                 type="text"
                                                 defaultValue={level.upperBound}
-                                                className="w-20 bg-muted/50 border border-border rounded px-2 py-1 text-sm text-foreground text-center font-mono focus:outline-none focus:border-cyan-500"
+                                                className="w-20 bg-muted/50 border border-border rounded px-2 py-1 text-sm text-foreground text-center font-mono focus:outline-none focus:border-primary"
                                             />
                                         </td>
                                         <td className="py-4 px-2 text-center">
@@ -245,7 +245,7 @@ export function ThresholdConfigView() {
                                 className="flex flex-col items-center text-center p-4 bg-muted/30 rounded-lg"
                             >
                                 <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center mb-3">
-                                    <channel.icon className="w-6 h-6 text-cyan-400" />
+                                    <channel.icon className="w-6 h-6 text-primary" />
                                 </div>
                                 <p className="text-sm font-medium text-foreground mb-1">
                                     {channel.name}
@@ -257,7 +257,7 @@ export function ThresholdConfigView() {
                                     onClick={() => toggleChannel(channel.name)}
                                     className={`w-12 h-6 rounded-full transition-colors relative ${
                                         channelStates[channel.name]
-                                            ? 'bg-cyan-500'
+                                            ? 'bg-primary'
                                             : 'bg-muted'
                                     }`}
                                 >
@@ -285,7 +285,7 @@ export function ThresholdConfigView() {
 
                     {/* Decorative checkmark */}
                     <div className="absolute top-6 right-6 opacity-10">
-                        <CheckCircle className="w-32 h-32 text-cyan-500" />
+                        <CheckCircle className="w-32 h-32 text-primary" />
                     </div>
 
                     <div className="space-y-4 relative">

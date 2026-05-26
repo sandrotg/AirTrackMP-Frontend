@@ -39,9 +39,9 @@ export const mockPredictionData: PredictionDataPoint[] = [
 ]
 
 export const mockProbabilityZones: ProbabilityZone[] = [
-  { name: "North Zone Alert", probability: 85, color: "bg-cyan-400" },
-  { name: "Industrial Corridor", probability: 42, color: "bg-cyan-600" },
-  { name: "Metro Residential", probability: 91, color: "bg-red-500" },
+  { name: "North Zone Alert", probability: 85, color: "bg-primary" },
+  { name: "Industrial Corridor", probability: 42, color: "bg-primary/60" },
+  { name: "Metro Residential", probability: 91, color: "bg-status-unhealthy" },
 ]
 
 export const mockInfluenceFactors: InfluenceFactor[] = [

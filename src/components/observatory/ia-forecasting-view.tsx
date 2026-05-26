@@ -114,11 +114,11 @@ export function IAForecastingView() {
                                 </div>
                                 <div className="flex items-center gap-4 text-xs text-muted-foreground">
                                     <div className="flex items-center gap-2">
-                                        <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
+                                        <span className="w-2 h-2 rounded-full bg-primary"></span>
                                         Historical PM2.5
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <span className="w-2 h-2 rounded-full bg-cyan-400/50"></span>
+                                        <span className="w-2 h-2 rounded-full bg-primary/50"></span>
                                         6h/12h/24h Projections
                                     </div>
                                 </div>
@@ -137,12 +137,12 @@ export function IAForecastingView() {
                                             >
                                                 <stop
                                                     offset="5%"
-                                                    stopColor="#22d3ee"
+                                                    stopColor="#06b6d4"
                                                     stopOpacity={0.3}
                                                 />
                                                 <stop
                                                     offset="95%"
-                                                    stopColor="#22d3ee"
+                                                    stopColor="#06b6d4"
                                                     stopOpacity={0}
                                                 />
                                             </linearGradient>
@@ -155,12 +155,12 @@ export function IAForecastingView() {
                                             >
                                                 <stop
                                                     offset="5%"
-                                                    stopColor="#22d3ee"
+                                                    stopColor="#06b6d4"
                                                     stopOpacity={0.15}
                                                 />
                                                 <stop
                                                     offset="95%"
-                                                    stopColor="#22d3ee"
+                                                    stopColor="#06b6d4"
                                                     stopOpacity={0}
                                                 />
                                             </linearGradient>
@@ -170,7 +170,7 @@ export function IAForecastingView() {
                                             axisLine={false}
                                             tickLine={false}
                                             tick={{
-                                                fill: '#64748b',
+                                                fill: 'var(--muted-foreground)',
                                                 fontSize: 10
                                             }}
                                         />
@@ -178,7 +178,7 @@ export function IAForecastingView() {
                                         <Area
                                             type="monotone"
                                             dataKey="historical"
-                                            stroke="#22d3ee"
+                                            stroke="var(--primary)"
                                             strokeWidth={2}
                                             fill="url(#historicalGradient)"
                                             connectNulls={false}
@@ -186,7 +186,7 @@ export function IAForecastingView() {
                                         <Area
                                             type="monotone"
                                             dataKey="projection"
-                                            stroke="#22d3ee"
+                                            stroke="var(--primary)"
                                             strokeWidth={2}
                                             strokeDasharray="5 5"
                                             fill="url(#projectionGradient)"
@@ -214,7 +214,7 @@ export function IAForecastingView() {
                                                 {zone.name}
                                             </span>
                                             <span
-                                                className={`text-sm font-semibold ${zone.probability > 80 ? 'text-red-400' : 'text-cyan-400'}`}
+                                                className={`text-sm font-semibold ${zone.probability > 80 ? 'text-status-unhealthy' : 'text-primary'}`}
                                             >
                                                 {zone.probability}%
                                             </span>
@@ -252,8 +252,8 @@ export function IAForecastingView() {
                                               key={factor.title}
                                               className="flex gap-3"
                                           >
-                                              <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center shrink-0">
-                                                  <Icon className="w-4 h-4 text-cyan-400" />
+                                              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+                                                  <Icon className="w-4 h-4 text-primary" />
                                               </div>
                                               <div>
                                                   <h4 className="text-sm font-medium text-foreground mb-1">
@@ -280,7 +280,7 @@ export function IAForecastingView() {
                                         Future Dispersion Map
                                     </h3>
                                 </div>
-                                <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded border border-green-500/30">
+                                <span className="px-2 py-1 bg-status-good/20 text-status-good text-xs rounded border border-status-good/30">
                                     LIVE SIMULATION
                                 </span>
                             </div>
@@ -293,14 +293,14 @@ export function IAForecastingView() {
                                     >
                                         <path
                                             d="M20,50 Q50,30 80,50 T140,50 T200,50"
-                                            stroke="#22d3ee"
+                                            stroke="var(--primary)"
                                             strokeWidth="0.5"
                                             fill="none"
                                             opacity="0.5"
                                         />
                                         <path
                                             d="M20,60 Q60,40 100,60 T160,60 T200,60"
-                                            stroke="#22d3ee"
+                                            stroke="var(--primary)"
                                             strokeWidth="0.5"
                                             fill="none"
                                             opacity="0.3"
@@ -309,14 +309,14 @@ export function IAForecastingView() {
                                             cx="100"
                                             cy="50"
                                             r="15"
-                                            fill="#22d3ee"
+                                            fill="var(--primary)"
                                             opacity="0.2"
                                         />
                                         <circle
                                             cx="140"
                                             cy="45"
                                             r="10"
-                                            fill="#f97316"
+                                            fill="var(--status-sensitive)"
                                             opacity="0.3"
                                         />
                                     </svg>
@@ -341,7 +341,7 @@ export function IAForecastingView() {
                                         cy="50"
                                         r="40"
                                         fill="none"
-                                        stroke="#1e293b"
+                                        stroke="var(--border)"
                                         strokeWidth="8"
                                     />
                                     <circle
@@ -349,14 +349,14 @@ export function IAForecastingView() {
                                         cy="50"
                                         r="40"
                                         fill="none"
-                                        stroke="#22d3ee"
+                                        stroke="var(--primary)"
                                         strokeWidth="8"
                                         strokeDasharray={`${94.2 * 2.51} ${100 * 2.51}`}
                                         strokeLinecap="round"
                                     />
                                 </svg>
                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                    <span className="text-2xl font-bold text-cyan-400">
+                                    <span className="text-2xl font-bold text-primary">
                                         94.2%
                                     </span>
                                     <span className="text-xs text-muted-foreground">
@@ -381,7 +381,7 @@ export function IAForecastingView() {
                     {/* Early Warning Panel */}
                     <div className="bg-card rounded-lg border border-border p-6">
                         <div className="flex items-center gap-3 mb-4">
-                            <AlertTriangle className="w-5 h-5 text-orange-500" />
+                            <AlertTriangle className="w-5 h-5 text-status-sensitive" />
                             <h3 className="text-lg font-semibold text-foreground uppercase tracking-wider">
                                 Early Warning (EWS)
                             </h3>
@@ -390,7 +390,7 @@ export function IAForecastingView() {
                         <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
                             RISK STATUS
                         </p>
-                        <p className="text-orange-400 font-semibold mb-6">
+                        <p className="text-status-sensitive font-semibold mb-6">
                             Level 2: Elevated Precaution
                         </p>
 
@@ -398,7 +398,7 @@ export function IAForecastingView() {
                             ACTIVE THRESHOLDS
                         </p>
                         <div className="space-y-3">
-                            <div className="bg-muted/50 rounded-lg p-4 border-l-2 border-orange-500">
+                            <div className="bg-muted/50 rounded-lg p-4 border-l-2 border-status-sensitive">
                                 <p className="text-sm font-medium text-foreground">
                                     PM10 Spike Detected
                                 </p>
@@ -406,7 +406,7 @@ export function IAForecastingView() {
                                     North-West Industrial Hub
                                 </p>
                             </div>
-                            <div className="bg-muted/50 rounded-lg p-4 border-l-2 border-cyan-500">
+                            <div className="bg-muted/50 rounded-lg p-4 border-l-2 border-primary">
                                 <p className="text-sm font-medium text-foreground">
                                     Inversion Probability
                                 </p>
@@ -416,7 +416,7 @@ export function IAForecastingView() {
                             </div>
                         </div>
 
-                        <button className="mt-6 w-full flex items-center justify-center gap-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 px-4 py-3 rounded-lg border border-cyan-500/30 transition-colors">
+                        <button className="mt-6 w-full flex items-center justify-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary px-4 py-3 rounded-lg border border-primary/30 transition-colors">
                             <FileText className="w-4 h-4" />
                             Export Crisis Report (PDF)
                         </button>
@@ -424,11 +424,11 @@ export function IAForecastingView() {
 
                     {/* Node Analytics */}
                     <div className="bg-card rounded-lg border border-border overflow-hidden">
-                        <div className="h-48 bg-gradient-to-br from-cyan-900/30 to-background relative">
+                        <div className="h-48 bg-linear-to-br from-primary/20 to-background relative">
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="w-32 h-32 rounded-full border border-cyan-500/30 flex items-center justify-center">
-                                    <div className="w-24 h-24 rounded-full border border-cyan-500/20 flex items-center justify-center">
-                                        <Globe className="w-12 h-12 text-cyan-500/50" />
+                                <div className="w-32 h-32 rounded-full border border-primary/30 flex items-center justify-center">
+                                    <div className="w-24 h-24 rounded-full border border-primary/20 flex items-center justify-center">
+                                        <Globe className="w-12 h-12 text-primary/50" />
                                     </div>
                                 </div>
                             </div>
@@ -441,7 +441,7 @@ export function IAForecastingView() {
                                 System Resilience: Optimal
                             </h3>
                             <div className="flex items-center gap-2 mt-2">
-                                <Activity className="w-4 h-4 text-cyan-400" />
+                                <Activity className="w-4 h-4 text-primary" />
                                 <span className="text-sm text-muted-foreground">
                                     Cluster Safe work
                                 </span>

@@ -10,11 +10,11 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 }
 
 const defaultThresholdLevels: ThresholdLevel[] = [
-  { classification: "Good", lowerBound: "0.00", upperBound: "12.00", color: "bg-green-500" },
-  { classification: "Moderate", lowerBound: "12.10", upperBound: "35.40", color: "bg-yellow-500" },
-  { classification: "Unhealthy for Sensitive", lowerBound: "35.50", upperBound: "55.40", color: "bg-orange-500" },
-  { classification: "Very Unhealthy", lowerBound: "55.50", upperBound: "150.40", color: "bg-red-500" },
-  { classification: "Hazardous", lowerBound: "150.50", upperBound: "500.00", color: "bg-purple-500" },
+  { classification: "Good", lowerBound: "0.00", upperBound: "12.00", color: "bg-status-good" },
+  { classification: "Moderate", lowerBound: "12.10", upperBound: "35.40", color: "bg-status-moderate" },
+  { classification: "Unhealthy for Sensitive", lowerBound: "35.50", upperBound: "55.40", color: "bg-status-sensitive" },
+  { classification: "Very Unhealthy", lowerBound: "55.50", upperBound: "150.40", color: "bg-status-unhealthy" },
+  { classification: "Hazardous", lowerBound: "150.50", upperBound: "500.00", color: "bg-status-hazardous" },
 ]
 
 const defaultNotificationChannels: NotificationChannel[] = [
@@ -82,8 +82,8 @@ export function createThresholdsApiProvider(): ThresholdsProvider {
       const now = new Date()
       return alerts.slice(0, 3).map((a: { id: number; type: string; createdAt: string }, i: number) => ({
         icon: iconMap[i === 0 ? "CheckCircle" : i === 1 ? "RefreshCw" : "Settings2"],
-        iconColor: i === 0 ? "text-green-400" : i === 1 ? "text-yellow-400" : "text-muted-foreground",
-        iconBg: i === 0 ? "bg-green-500/20" : i === 1 ? "bg-yellow-500/20" : "bg-muted",
+        iconColor: i === 0 ? "text-status-good" : i === 1 ? "text-status-moderate" : "text-muted-foreground",
+        iconBg: i === 0 ? "bg-status-good/20" : i === 1 ? "bg-status-moderate/20" : "bg-muted",
         title: `Alert ${a.type}`,
         description: `Generated from API at ${new Date(a.createdAt).toLocaleTimeString()}`,
         time: new Date(now.getTime() - i * 3600000).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" }),

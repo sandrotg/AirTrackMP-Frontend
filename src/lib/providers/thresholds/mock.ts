@@ -38,11 +38,11 @@ export const mockNormativeOptions: NormativeOption[] = [
 ]
 
 export const mockThresholdLevels: ThresholdLevel[] = [
-  { classification: "Good", lowerBound: "0.00", upperBound: "12.00", color: "bg-green-500" },
-  { classification: "Moderate", lowerBound: "12.10", upperBound: "35.40", color: "bg-yellow-500" },
-  { classification: "Unhealthy for Sensitive", lowerBound: "35.50", upperBound: "55.40", color: "bg-orange-500" },
-  { classification: "Very Unhealthy", lowerBound: "55.50", upperBound: "150.40", color: "bg-red-500" },
-  { classification: "Hazardous", lowerBound: "150.50", upperBound: "500.00", color: "bg-purple-500" },
+  { classification: "Good", lowerBound: "0.00", upperBound: "12.00", color: "bg-status-good" },
+  { classification: "Moderate", lowerBound: "12.10", upperBound: "35.40", color: "bg-status-moderate" },
+  { classification: "Unhealthy for Sensitive", lowerBound: "35.50", upperBound: "55.40", color: "bg-status-sensitive" },
+  { classification: "Very Unhealthy", lowerBound: "55.50", upperBound: "150.40", color: "bg-status-unhealthy" },
+  { classification: "Hazardous", lowerBound: "150.50", upperBound: "500.00", color: "bg-status-hazardous" },
 ]
 
 export const mockNotificationChannels: NotificationChannel[] = [
@@ -52,8 +52,8 @@ export const mockNotificationChannels: NotificationChannel[] = [
 ]
 
 export const mockValidationLogs: ValidationLog[] = [
-  { icon: CheckCircle, iconColor: "text-green-400", iconBg: "bg-green-500/20", title: "Configuration Integrity Passed", description: "System checksum matched last administrative override.", time: "14:02:11" },
-  { icon: RefreshCw, iconColor: "text-yellow-400", iconBg: "bg-yellow-500/20", title: "Webhook Sync [ID: 290]", description: "Post-transactional sync successful with node-external-01.", time: "13:45:08" },
+  { icon: CheckCircle, iconColor: "text-status-good", iconBg: "bg-status-good/20", title: "Configuration Integrity Passed", description: "System checksum matched last administrative override.", time: "14:02:11" },
+  { icon: RefreshCw, iconColor: "text-status-moderate", iconBg: "bg-status-moderate/20", title: "Webhook Sync [ID: 290]", description: "Post-transactional sync successful with node-external-01.", time: "13:45:08" },
   { icon: Settings2, iconColor: "text-muted-foreground", iconBg: "bg-muted", title: "Manual Override Log", description: "Engineer admin_j.doe modified hazardous upper limit.", time: "09:12:44" },
 ]
 

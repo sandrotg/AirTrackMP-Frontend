@@ -247,10 +247,10 @@ export function InventoryView() {
                                         <div
                                             className={`h-full rounded-full ${
                                                 node.health > 80
-                                                    ? 'bg-green-500'
+                                                    ? 'bg-status-good'
                                                     : node.health > 40
-                                                      ? 'bg-yellow-500'
-                                                      : 'bg-red-500'
+                                                      ? 'bg-status-moderate'
+                                                      : 'bg-status-unhealthy'
                                             }`}
                                             style={{ width: `${node.health}%` }}
                                         />
@@ -258,10 +258,10 @@ export function InventoryView() {
                                     <span
                                         className={`text-xs ${
                                             node.health > 80
-                                                ? 'text-green-500'
+                                                ? 'text-status-good'
                                                 : node.health > 40
-                                                  ? 'text-yellow-500'
-                                                  : 'text-red-500'
+                                                  ? 'text-status-moderate'
+                                                  : 'text-status-unhealthy'
                                         }`}
                                     >
                                         {node.status === 'offline'
@@ -270,7 +270,7 @@ export function InventoryView() {
                                     </span>
                                 </div>
                                 <span
-                                    className={`text-sm ${node.status === 'offline' ? 'text-red-500' : 'text-foreground'}`}
+                                    className={`text-sm ${node.status === 'offline' ? 'text-status-unhealthy' : 'text-foreground'}`}
                                 >
                                     {node.uptime}
                                 </span>
@@ -279,7 +279,7 @@ export function InventoryView() {
                                 </span>
                                 <div className="flex items-center gap-2">
                                     {node.status === 'offline' ? (
-                                        <button className="p-1.5 text-yellow-500 hover:bg-yellow-500/20 rounded transition-colors">
+                                        <button className="p-1.5 text-status-moderate hover:bg-status-moderate/20 rounded transition-colors">
                                             <Power className="w-4 h-4" />
                                         </button>
                                     ) : (
@@ -329,18 +329,18 @@ export function InventoryView() {
                             key={index}
                             className={`flex items-start gap-3 p-4 rounded-lg border-l-2 ${
                                 cmd.type === 'success'
-                                    ? 'bg-green-500/5 border-green-500'
-                                    : 'bg-red-500/5 border-red-500'
+                                    ? 'bg-status-good/5 border-status-good'
+                                    : 'bg-status-unhealthy/5 border-status-unhealthy'
                             }`}
                         >
                             {cmd.type === 'success' ? (
-                                <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5" />
+                                <CheckCircle2 className="w-5 h-5 text-status-good mt-0.5" />
                             ) : (
-                                <AlertCircle className="w-5 h-5 text-red-500 mt-0.5" />
+                                <AlertCircle className="w-5 h-5 text-status-unhealthy mt-0.5" />
                             )}
                             <div className="flex-1">
                                 <p
-                                    className={`font-medium ${cmd.type === 'success' ? 'text-green-500' : 'text-red-500'}`}
+                                    className={`font-medium ${cmd.type === 'success' ? 'text-status-good' : 'text-status-unhealthy'}`}
                                 >
                                     {cmd.command}
                                 </p>

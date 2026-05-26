@@ -52,8 +52,8 @@ export const mockProtocols: Protocol[] = [
 ]
 
 export const mockAuthorities: Authority[] = [
-  { name: "Mayor's Office", icon: Building2, status: "READ", statusColor: "text-green-400" },
-  { name: "Environmental Agency", icon: Home, status: "DELIVERED", statusColor: "text-cyan-400" },
+  { name: "Mayor's Office", icon: Building2, status: "READ", statusColor: "text-status-good" },
+  { name: "Environmental Agency", icon: Home, status: "DELIVERED", statusColor: "text-primary" },
   { name: "Traffic Management", icon: TrafficCone, status: "SENT", statusColor: "text-muted-foreground" },
 ]
 
