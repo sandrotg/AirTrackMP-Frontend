@@ -73,6 +73,28 @@ export const mockCorrelationData: CorrelationDataPoint[] = [
     { humidity: 80, pollutant: 65 },
 ]
 
+export interface MeasurementRecord {
+  id: number
+  pm25: number
+  pm10: number
+  temperature: number
+  humidity: number
+  recordedAt: string
+}
+
+export const mockMeasurementRecords: MeasurementRecord[] = [
+  { id: 1, pm25: 45.2, pm10: 38.1, temperature: 28.0, humidity: 72.0, recordedAt: "2026-05-26T10:00:00" },
+  { id: 2, pm25: 12.5, pm10: 20.3, temperature: 24.1, humidity: 65.0, recordedAt: "2026-05-26T09:55:00" },
+  { id: 3, pm25: 67.8, pm10: 55.2, temperature: 30.2, humidity: 58.0, recordedAt: "2026-05-26T09:50:00" },
+  { id: 4, pm25: 38.0, pm10: 42.5, temperature: 26.8, humidity: 70.0, recordedAt: "2026-05-26T09:45:00" },
+  { id: 5, pm25: 22.1, pm10: 30.0, temperature: 23.5, humidity: 68.0, recordedAt: "2026-05-26T09:40:00" },
+  { id: 6, pm25: 55.3, pm10: 48.7, temperature: 29.0, humidity: 60.0, recordedAt: "2026-05-26T09:35:00" },
+  { id: 7, pm25: 35.2, pm10: 40.1, temperature: 27.0, humidity: 71.0, recordedAt: "2026-05-26T09:30:00" },
+  { id: 8, pm25: 8.5, pm10: 15.0, temperature: 22.0, humidity: 75.0, recordedAt: "2026-05-26T09:25:00" },
+  { id: 9, pm25: 72.0, pm10: 60.5, temperature: 31.5, humidity: 55.0, recordedAt: "2026-05-26T09:20:00" },
+  { id: 10, pm25: 28.4, pm10: 35.8, temperature: 25.0, humidity: 69.0, recordedAt: "2026-05-26T09:15:00" },
+]
+
 export const mockHourlyData: HourlyDataPoint[] = [
     { hour: 0, value: 18.2 },
     { hour: 1, value: 17.5 },
@@ -105,6 +127,7 @@ export interface MetricsMockProvider extends BaseProvider<MetricsData> {
     getAqiData(): Promise<ChartDataPoint[]>
     getCorrelationData(): Promise<CorrelationDataPoint[]>
     getHourlyData(): Promise<HourlyDataPoint[]>
+    getRawMeasurements(limit?: number): Promise<MeasurementRecord[]>
 }
 
 export function createMetricsMockProvider(): MetricsMockProvider {
@@ -127,6 +150,10 @@ export function createMetricsMockProvider(): MetricsMockProvider {
         },
         async getHourlyData() {
             return mockHourlyData
+        },
+        async getRawMeasurements(limit) {
+            const records = mockMeasurementRecords
+            return limit ? records.slice(-limit) : records
         }
     }
 }

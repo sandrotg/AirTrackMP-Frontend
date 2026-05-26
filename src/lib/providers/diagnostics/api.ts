@@ -1,21 +1,17 @@
 import { DiagnosticsProvider } from "./provider"
 import { LogEntry, HexDataRow } from "./mock"
 import { getApiToken } from "@/lib/auth-token"
+import { createMetricsProvider } from "@/lib/providers/metrics"
 
 export function createDiagnosticsApiProvider(): DiagnosticsProvider {
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
-
-  const getAuthHeaders = (): HeadersInit => ({
-    Authorization: `Bearer ${getApiToken()}`,
-  })
+  const metrics = createMetricsProvider(getApiToken())
 
   return {
     type: "api",
     async getAll() {
-      const res = await fetch(`${API_BASE}/api/measurements`, { headers: getAuthHeaders() })
-      if (!res.ok) return generateMockLogs()
-      const data = await res.json()
-      return data.slice(-15).map((m: { id: number; recordedAt: string; pm25: number; pm10: number; temperature: number; humidity: number }) => ({
+      const measurements = await metrics.getRawMeasurements(15)
+      if (measurements.length === 0) return generateMockLogs()
+      return measurements.map(m => ({
         time: new Date(m.recordedAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
         type: m.pm25 > 55 ? "ERROR" : m.pm25 > 35 ? "WARN" : "INFO",
         tag: "MQTT",
@@ -31,10 +27,9 @@ export function createDiagnosticsApiProvider(): DiagnosticsProvider {
       return this.getAll()
     },
     async getHexData() {
-      const res = await fetch(`${API_BASE}/api/measurements`, { headers: getAuthHeaders() })
-      if (!res.ok) return generateMockHexData()
-      const data = await res.json()
-      return data.slice(-5).map((m: { id: number; pm25: number }, i: number) => ({
+      const measurements = await metrics.getRawMeasurements(5)
+      if (measurements.length === 0) return generateMockHexData()
+      return measurements.map((m, i) => ({
         offset: `00000${i * 16}`,
         bytes: Array(16).fill(0).map((_, j) => `${(m.pm25 + i * j).toString(16).padStart(2, "0").toUpperCase()}`).join(" "),
         ascii: "DATA_FROM_API",

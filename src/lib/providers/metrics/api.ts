@@ -1,4 +1,4 @@
-import { MetricsData } from './mock'
+import { MetricsData, MeasurementRecord } from './mock'
 import { MetricsProvider } from './provider'
 
 interface ApiMeasurement {
@@ -170,6 +170,11 @@ export function createMetricsApiProvider(authToken: string | null = null): Metri
                   hour: new Date(d.period).getHours(),
                   value: d.avgPm25,
               }))
+          },
+          async getRawMeasurements(limit) {
+              const all = await fetchAllMeasurements()
+              if (!limit) return all as MeasurementRecord[]
+              return all.slice(-limit) as MeasurementRecord[]
           }
       }
   }

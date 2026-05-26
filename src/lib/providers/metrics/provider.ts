@@ -1,4 +1,4 @@
-import { MetricsData } from "./mock"
+import { MetricsData, MeasurementRecord } from "./mock"
 import { BaseProvider } from "../base"
 import { getProviderType } from "@/lib/config"
 import { createMetricsMockProvider } from "./mock"
@@ -25,6 +25,7 @@ export interface MetricsProvider extends BaseProvider<MetricsData> {
   getAqiData(): Promise<ChartDataPoint[]>
   getCorrelationData(): Promise<CorrelationDataPoint[]>
   getHourlyData(): Promise<HourlyDataPoint[]>
+  getRawMeasurements(limit?: number): Promise<MeasurementRecord[]>
 }
 
 export function createMetricsProvider(authToken: string | null = null): MetricsProvider {
