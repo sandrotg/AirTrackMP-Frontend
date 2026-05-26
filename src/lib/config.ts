@@ -28,7 +28,7 @@ export const providerConfig: ProviderConfig = {
     thresholds: 'api',
     emergency: 'api',
     system: 'api',
-    diagnostics: 'api',
+    diagnostics: 'mock',
     inventory: 'api',
     dataExplorer: 'api',
     analytics: 'api'
