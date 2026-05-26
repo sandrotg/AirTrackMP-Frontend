@@ -1,4 +1,4 @@
-export type ProviderType = 'api' | 'api'
+export type ProviderType = 'api' | 'mock'
 
 export interface ProviderConfig {
     alerts: ProviderType

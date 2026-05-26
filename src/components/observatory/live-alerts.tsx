@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { useAlerts } from "@/hooks/providers/useAlerts"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const alertStyles = {
   critical: "border-l-destructive",
@@ -16,7 +17,30 @@ const titleStyles = {
 }
 
 export function LiveAlerts() {
-  const { alerts } = useAlerts()
+  const { alerts, loading } = useAlerts()
+
+  if (loading) {
+    return (
+      <div className="bg-card border border-border rounded-lg p-4 h-full">
+        <div className="flex items-center justify-between mb-4">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="size-2.5 rounded-full" />
+        </div>
+        <div className="space-y-3">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="bg-secondary/50 border-l-2 border-l-muted rounded-r p-3">
+              <div className="flex items-center justify-between mb-1">
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-3 w-10" />
+              </div>
+              <Skeleton className="h-3 w-full" />
+            </div>
+          ))}
+        </div>
+        <Skeleton className="h-4 w-32 mx-auto mt-4" />
+      </div>
+    )
+  }
 
   const mapped = alerts.slice(0, 5).map((a) => {
     const label =

@@ -8,6 +8,7 @@ import {
     TrendingDown
 } from 'lucide-react'
 import { useMetrics } from '@/hooks/providers/useMetrics'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface MetricCardProps {
     label: string
@@ -84,16 +85,47 @@ export function MetricCard({
 export function MetricCardsRow() {
     const { metrics, loading } = useMetrics()
 
-    if (loading || metrics.length === 0) {
+    if (loading) {
         return (
             <div className="grid grid-cols-4 gap-4">
                 {[1, 2, 3, 4].map((i) => (
                     <div
                         key={i}
-                        className="bg-card border border-border rounded-lg p-4 animate-pulse"
+                        className="bg-card border border-border rounded-lg p-4"
                     >
-                        <div className="h-4 w-20 bg-secondary rounded mb-2" />
-                        <div className="h-8 w-16 bg-secondary rounded" />
+                        <div className="flex items-center justify-between mb-2">
+                            <Skeleton className="h-3 w-24" />
+                            {i % 2 === 0 && <Skeleton className="h-4 w-14 rounded" />}
+                        </div>
+                        <div className="flex items-baseline gap-1">
+                            <Skeleton className="h-9 w-16" />
+                            <Skeleton className="h-4 w-8" />
+                        </div>
+                        <div className="flex items-center gap-1 mt-2">
+                            <Skeleton className="h-3 w-3" />
+                            <Skeleton className="h-3 w-20" />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )
+    }
+
+    if (metrics.length === 0) {
+        return (
+            <div className="grid grid-cols-4 gap-4">
+                {[1, 2, 3, 4].map((i) => (
+                    <div
+                        key={i}
+                        className="bg-card border border-border rounded-lg p-4"
+                    >
+                        <div className="flex items-center justify-between mb-2">
+                            <Skeleton className="h-3 w-24" />
+                        </div>
+                        <div className="flex items-baseline gap-1">
+                            <Skeleton className="h-9 w-16" />
+                            <Skeleton className="h-4 w-8" />
+                        </div>
                     </div>
                 ))}
             </div>

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { Map, MapControls, MapMarker, MarkerContent, MarkerTooltip } from "@/components/ui/map"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useMapNodes } from "@/hooks/providers/useMapNodes"
 
 const statusDotColors = {
@@ -23,6 +24,19 @@ export function MapView() {
   const [opacity, setOpacity] = useState(85)
 
   const hotspot = nodes.find((n) => n.status === "critical")
+
+  if (loading) {
+    return (
+      <div className="relative bg-card border border-border rounded-lg overflow-hidden h-[380px]">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/50 backdrop-blur-xs">
+          <Skeleton className="size-16 rounded-full mb-4" />
+          <Skeleton className="h-4 w-40 mb-2" />
+          <Skeleton className="h-3 w-24" />
+        </div>
+        <Skeleton className="h-full w-full rounded-none" />
+      </div>
+    )
+  }
 
   return (
     <div className="relative bg-card border border-border rounded-lg overflow-hidden h-[380px]">

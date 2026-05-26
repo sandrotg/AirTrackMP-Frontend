@@ -1,5 +1,5 @@
 import { BaseProvider } from "../base"
-import { AnalyticsData } from "./provider"
+import { AnalyticsData, ChartDataPoint, CorrelationDataPoint } from "./provider"
 
 export const mockAnalyticsData: AnalyticsData[] = [
   { id: "1", timestamp: "2026-05-25T10:00:00Z", value: 45.2, metric: "PM2.5", unit: "μg/m³" },

@@ -2,6 +2,7 @@
 
 import { AnalyticsChart, ScatterPlotChart } from './charts'
 import { BrainCircuit, Layers } from 'lucide-react'
+import { Skeleton } from '@/components/ui/skeleton'
 import { usePredictions } from '@/hooks/providers/usePredictions'
 
 export function ForecastingView() {
@@ -24,19 +25,25 @@ export function ForecastingView() {
                         <p className="text-xs text-muted-foreground">
                             CONFIDENCE INTERVAL
                         </p>
-                        <p className="text-2xl font-semibold text-foreground">
-                            {loading
-                                ? '...'
-                                : `${forecastingData?.confidenceInterval}%`}
-                        </p>
+                        {loading ? (
+                            <Skeleton className="h-8 w-20 mt-1 ml-auto" />
+                        ) : (
+                            <p className="text-2xl font-semibold text-foreground">
+                                {forecastingData?.confidenceInterval}%
+                            </p>
+                        )}
                     </div>
                     <div className="bg-primary/20 rounded-lg px-4 py-2 text-right">
                         <p className="text-[10px] text-muted-foreground">
                             PROCESSING NODE
                         </p>
-                        <p className="text-sm font-bold text-primary">
-                            {loading ? '...' : forecastingData?.processingNode}
-                        </p>
+                        {loading ? (
+                            <Skeleton className="h-5 w-28 mt-1 ml-auto" />
+                        ) : (
+                            <p className="text-sm font-bold text-primary">
+                                {forecastingData?.processingNode}
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>

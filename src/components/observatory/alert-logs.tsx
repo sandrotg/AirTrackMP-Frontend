@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { Search, SlidersHorizontal, X, AlertTriangle } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useAlerts } from '@/hooks/providers/useAlerts'
 
 const typeConfig = {
@@ -67,14 +68,15 @@ export function AlertLogs() {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr>
-                                    <td
-                                        colSpan={5}
-                                        className="p-4 text-center text-muted-foreground"
-                                    >
-                                        Loading...
-                                    </td>
-                                </tr>
+                                Array.from({ length: 6 }).map((_, i) => (
+                                    <tr key={i} className="border-b border-border/50">
+                                        <td className="p-4"><Skeleton className="h-4 w-24" /></td>
+                                        <td className="p-4"><div className="flex items-center gap-2"><Skeleton className="size-1.5 rounded-full" /><Skeleton className="h-4 w-28" /></div></td>
+                                        <td className="p-4"><Skeleton className="h-5 w-16 rounded" /></td>
+                                        <td className="p-4"><Skeleton className="h-4 w-20 mb-1" /><Skeleton className="h-4 w-16" /></td>
+                                        <td className="p-4"><Skeleton className="h-4 w-16" /></td>
+                                    </tr>
+                                ))
                             ) : (
                                 alerts.map((log) => (
                                     <tr

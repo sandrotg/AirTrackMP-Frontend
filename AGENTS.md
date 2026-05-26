@@ -56,6 +56,11 @@ Uses `GET /api/alert` with Bearer token from `auth-token.ts`. Returns `[]` if no
 ### Hooks
 - `src/hooks/providers/useAlerts.ts`, `useMetrics.ts`, `useMapNodes.ts`, `usePredictions.ts`, `useAnalytics.ts` — consume providers via `createXxxProvider()` inside `useMemo`, fetch in `useEffect`
 
+### Loading states (`src/components/ui/skeleton.tsx`)
+- Uses shadcn `<Skeleton>` component (`animate-pulse` + `rounded-md bg-muted`)
+- Every data component has a dedicated skeleton in its `if (loading)` branch matching the real layout
+- Route-level `loading.tsx` files in each segment (`dashboard/`, `network/`, `analytics/`, `forecasting/`, `alerts/`, `login/`) — render inside AppLayout with full-page skeletons using the same grid structure as the page
+
 ### Error system (`src/lib/error-handler.ts`)
 - Uses **sonner** (shadcn wrapper) for toast notifications
 - `<Toaster />` rendered in `src/app/layout.tsx` (inside body, after SessionProvider)
@@ -75,4 +80,3 @@ Uses `GET /api/alert` with Bearer token from `auth-token.ts`. Returns `[]` if no
 - Some POST `/api/alert` calls fail with 500 for certain `type` values (backend bug)
 - `AUTH_URL` in `.env` points to `http://localhost:3000` — update if dev server uses a different port
 - No test framework configured yet
-- `src/lib/config.ts` `ProviderType` is `'api' | 'api'` (typo, should be `'api' | 'mock'`) — causes TS errors in all mock providers

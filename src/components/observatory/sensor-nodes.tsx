@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils"
 import { CheckCircle, AlertTriangle, XCircle, Cpu, Signal, Battery, RefreshCw, Edit, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useSensorNodes } from "@/hooks/useSensorNodes"
 
 const statusConfig = {
@@ -32,8 +33,27 @@ export function SensorNodeManagement() {
   if (loading) {
     return (
       <div className="bg-card border border-border rounded-lg p-4">
-        <div className="flex items-center justify-center h-32">
-          <span className="text-muted-foreground">Loading...</span>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-4 w-4 rounded" />
+            <Skeleton className="h-4 w-48" />
+          </div>
+          <Skeleton className="h-4 w-28" />
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-secondary/50 rounded-lg p-3 flex items-center gap-3">
+              <Skeleton className="size-10 rounded-full" />
+              <div className="flex-1 space-y-1.5">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-3 w-16" />
+              </div>
+              <div className="text-right space-y-1.5">
+                <Skeleton className="h-3 w-14" />
+                <Skeleton className="h-3 w-10" />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     )
@@ -104,8 +124,60 @@ export function FleetManager() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <span className="text-muted-foreground">Loading...</span>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-48" />
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-4 w-96" />
+          </div>
+          <div className="flex gap-3">
+            <Skeleton className="h-9 w-32 rounded-md" />
+            <Skeleton className="h-9 w-36 rounded-md" />
+          </div>
+        </div>
+        <div className="grid grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="bg-card border border-border rounded-lg p-4">
+              <Skeleton className="h-4 w-28 mb-2" />
+              <div className="flex items-baseline gap-2">
+                <Skeleton className="h-8 w-12" />
+                <Skeleton className="h-3 w-10" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="bg-card border border-border rounded-lg p-4">
+          <div className="flex items-center justify-between mb-4">
+            <Skeleton className="h-5 w-40" />
+            <div className="flex gap-2">
+              <Skeleton className="h-7 w-10 rounded" />
+              <Skeleton className="h-7 w-20 rounded" />
+            </div>
+          </div>
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-border">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <th key={i} className="pb-3">
+                    <Skeleton className="h-3 w-16" />
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[1, 2, 3, 4].map((row) => (
+                <tr key={row} className="border-b border-border/50">
+                  {[1, 2, 3, 4, 5, 6].map((col) => (
+                    <td key={col} className="py-4">
+                      <Skeleton className="h-4 w-20" />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     )
   }
