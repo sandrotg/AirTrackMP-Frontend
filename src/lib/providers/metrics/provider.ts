@@ -27,15 +27,15 @@ export interface MetricsProvider extends BaseProvider<MetricsData> {
   getHourlyData(): Promise<HourlyDataPoint[]>
 }
 
-export function createMetricsProvider(): MetricsProvider {
-  const providerType = getProviderType("metrics")
+export function createMetricsProvider(authToken: string | null = null): MetricsProvider {
+    const providerType = getProviderType("metrics")
 
-  switch (providerType) {
-    case "mock":
-      return createMetricsMockProvider()
-    case "api":
-      return createMetricsApiProvider()
-    default:
-      return createMetricsMockProvider()
-  }
+    switch (providerType) {
+        case "mock":
+            return createMetricsMockProvider()
+        case "api":
+            return createMetricsApiProvider(authToken)
+        default:
+            return createMetricsMockProvider()
+    }
 }

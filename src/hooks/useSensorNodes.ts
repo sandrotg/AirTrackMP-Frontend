@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { createMapProvider, SensorNodeData } from '@/lib/providers/map'
+import { getApiToken } from '@/lib/auth-token'
 
 interface UseSensorNodesResult {
   sensorNodes: SensorNodeData[]
@@ -13,7 +14,8 @@ export function useSensorNodes(): UseSensorNodesResult {
   const [sensorNodes, setSensorNodes] = useState<SensorNodeData[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
-  const provider = useMemo(() => createMapProvider(), [])
+  const token = getApiToken()
+  const provider = useMemo(() => createMapProvider(token), [])
 
   useEffect(() => {
     let mounted = true
@@ -45,7 +47,7 @@ export function useSensorNodes(): UseSensorNodesResult {
     return () => {
       mounted = false
     }
-  }, [provider])
+  }, [provider, token])
 
   return { sensorNodes, loading, error }
 }

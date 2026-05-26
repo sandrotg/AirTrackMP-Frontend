@@ -2,32 +2,31 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { 
-    createMetricsProvider, 
-    MetricsData,
+    createAnalyticsProvider, 
+    AnalyticsData,
     ChartDataPoint,
-    CorrelationDataPoint,
-    HourlyDataPoint
-} from '@/lib/providers/metrics'
+    CorrelationDataPoint
+} from '@/lib/providers/analytics'
 import { getApiToken } from '@/lib/auth-token'
 
-interface UseMetricsResult {
-    metrics: MetricsData[]
-    aqiData: ChartDataPoint[]
+interface UseAnalyticsResult {
+    analyticsData: AnalyticsData[]
+    chartData: ChartDataPoint[]
     correlationData: CorrelationDataPoint[]
-    hourlyData: HourlyDataPoint[]
+    summary: Record<string, number>
     loading: boolean
     error: Error | null
 }
 
-export function useMetrics(): UseMetricsResult {
-    const [metrics, setMetrics] = useState<MetricsData[]>([])
-    const [aqiData, setAqiData] = useState<ChartDataPoint[]>([])
+export function useAnalytics(): UseAnalyticsResult {
+    const [analyticsData, setAnalyticsData] = useState<AnalyticsData[]>([])
+    const [chartData, setChartData] = useState<ChartDataPoint[]>([])
     const [correlationData, setCorrelationData] = useState<CorrelationDataPoint[]>([])
-    const [hourlyData, setHourlyData] = useState<HourlyDataPoint[]>([])
+    const [summary, setSummary] = useState<Record<string, number>>({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<Error | null>(null)
     const token = getApiToken()
-    const provider = useMemo(() => createMetricsProvider(token), [])
+    const provider = useMemo(() => createAnalyticsProvider(), [])
 
     useEffect(() => {
         let mounted = true
@@ -37,29 +36,29 @@ export function useMetrics(): UseMetricsResult {
             try {
                 // Load all data in parallel
                 const [
-                    metricsData,
-                    aqi,
+                    data,
+                    chart,
                     correlation,
-                    hourly
+                    summ
                 ] = await Promise.all([
-                    provider.getMetrics(),
-                    provider.getAqiData(),
+                    provider.getAnalytics(),
+                    provider.getChartData(),
                     provider.getCorrelationData(),
-                    provider.getHourlyData()
+                    provider.getSummary()
                 ])
                 
                 if (mounted) {
-                    setMetrics(metricsData)
-                    setAqiData(aqi)
+                    setAnalyticsData(data)
+                    setChartData(chart)
                     setCorrelationData(correlation)
-                    setHourlyData(hourly)
+                    setSummary(summ)
                 }
             } catch (err) {
                 if (mounted) {
                     setError(
                         err instanceof Error
                             ? err
-                            : new Error('Failed to load metrics data')
+                            : new Error('Failed to load analytics data')
                     )
                 }
             } finally {
@@ -76,5 +75,5 @@ export function useMetrics(): UseMetricsResult {
         }
     }, [provider, token])
 
-    return { metrics, aqiData, correlationData, hourlyData, loading, error }
+    return { analyticsData, chartData, correlationData, summary, loading, error }
 }

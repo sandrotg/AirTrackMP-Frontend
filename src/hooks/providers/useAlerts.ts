@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { createAlertsProvider } from '@/lib/providers/alerts'
 import { AlertLog } from '@/lib/types'
+import { getApiToken } from '@/lib/auth-token'
 
 interface UseAlertsResult {
     alerts: AlertLog[]
@@ -18,9 +19,10 @@ export function useAlerts(): UseAlertsResult {
     const [error, setError] = useState<Error | null>(null)
     const [selectedAlert, setSelectedAlert] = useState<AlertLog | null>(null)
     const provider = useMemo(() => createAlertsProvider(), [])
+    const token = getApiToken()
 
     useEffect(() => {
-        const mounted = true
+        let mounted = true
 
         async function loadAlerts() {
             setLoading(true)
@@ -48,7 +50,11 @@ export function useAlerts(): UseAlertsResult {
         }
 
         loadAlerts()
-    }, [provider])
+
+        return () => {
+            mounted = false
+        }
+    }, [provider, token])
 
     return { alerts, loading, error, selectedAlert, setSelectedAlert }
 }

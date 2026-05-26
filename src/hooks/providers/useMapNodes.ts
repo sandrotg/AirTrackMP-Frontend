@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { createMapProvider, MapNode } from '@/lib/providers/map'
+import { getApiToken } from '@/lib/auth-token'
 
 interface UseMapNodesResult {
     nodes: MapNode[]
@@ -14,9 +15,10 @@ export function useMapNodes(): UseMapNodesResult {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<Error | null>(null)
     const provider = useMemo(() => createMapProvider(), [])
+    const token = getApiToken()
 
     useEffect(() => {
-        const mounted = true
+        let mounted = true
 
         async function loadData() {
             setLoading(true)
@@ -41,7 +43,11 @@ export function useMapNodes(): UseMapNodesResult {
         }
 
         loadData()
-    }, [provider])
+
+        return () => {
+            mounted = false
+        }
+    }, [provider, token])
 
     return { nodes, loading, error }
 }

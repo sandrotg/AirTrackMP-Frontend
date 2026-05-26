@@ -185,32 +185,29 @@ export function IAForecastingView() {
                                 Influence Factors
                             </h3>
 
-                            <div className="space-y-4">
-                                {influenceFactors.map((factor) => (
-                                    <div
-                                        key={factor.title}
-                                        className="flex gap-3"
-                                    >
-                                        <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center shrink-0">
-                                            {(() => {
-                                                const Icon =
-                                                    factor.icon ?? Activity
-                                                return (
-                                                    <Icon className="w-4 h-4 text-cyan-400" />
-                                                )
-                                            })()}
-                                        </div>
-                                        <div>
-                                            <h4 className="text-sm font-medium text-foreground mb-1">
-                                                {factor.title}
-                                            </h4>
-                                            <p className="text-xs text-muted-foreground leading-relaxed">
-                                                {factor.description}
-                                            </p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                          <div className="space-y-4">
+                                  {influenceFactors.map((factor) => {
+                                      const Icon = factor.icon || Activity;
+                                      return (
+                                          <div
+                                              key={factor.title}
+                                              className="flex gap-3"
+                                          >
+                                              <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center shrink-0">
+                                                  <Icon className="w-4 h-4 text-cyan-400" />
+                                              </div>
+                                              <div>
+                                                  <h4 className="text-sm font-medium text-foreground mb-1">
+                                                      {factor.title}
+                                                  </h4>
+                                                  <p className="text-xs text-muted-foreground leading-relaxed">
+                                                      {factor.description}
+                                                  </p>
+                                              </div>
+                                          </div>
+                                      );
+                                  })}
+                              </div>
                         </div>
 
                         {/* Future Dispersion Map */}

@@ -38,15 +38,15 @@ export interface MapProvider extends BaseProvider<MapNode> {
   getSensorNodes(): Promise<SensorNodeData[]>
 }
 
-export function createMapProvider(): MapProvider {
-  const providerType = getProviderType("map")
+export function createMapProvider(authToken: string | null = null): MapProvider {
+    const providerType = getProviderType("map")
 
-  switch (providerType) {
-    case "mock":
-      return createMapMockProvider()
-    case "api":
-      return createMapApiProvider()
-    default:
-      return createMapMockProvider()
-  }
+    switch (providerType) {
+        case "mock":
+            return createMapMockProvider()
+        case "api":
+            return createMapApiProvider(authToken)
+        default:
+            return createMapMockProvider()
+    }
 }

@@ -16,39 +16,25 @@ import {
     Scatter,
     ZAxis
 } from 'recharts'
-import { useMetrics } from '@/hooks/providers/useMetrics'
-
-const aqiData = [
-    { time: '00:00', pm25: 35, pm10: 28 },
-    { time: '03:00', pm25: 32, pm10: 25 },
-    { time: '06:00', pm25: 45, pm10: 38 },
-    { time: '09:00', pm25: 52, pm10: 42 },
-    { time: '12:00', pm25: 48, pm10: 40 },
-    { time: '15:00', pm25: 55, pm10: 45 },
-    { time: '18:00', pm25: 65, pm10: 52 },
-    { time: '21:00', pm25: 58, pm10: 48 },
-    { time: '23:59', pm25: 50, pm10: 42 }
-]
-
-const correlationData = [
-    { humidity: 40, pollutant: 45 },
-    { humidity: 50, pollutant: 55 },
-    { humidity: 60, pollutant: 72 },
-    { humidity: 70, pollutant: 85 },
-    { humidity: 75, pollutant: 78 },
-    { humidity: 80, pollutant: 65 }
-]
+import { useAnalytics } from '@/hooks/providers/useAnalytics'
 
 export function AirQualityChart() {
-    const { aqiData, loading } = useMetrics()
+    const { chartData, loading } = useAnalytics()
 
-    if (loading || aqiData.length === 0) {
+    if (loading || chartData.length === 0) {
         return (
             <div className="bg-card border border-border rounded-lg p-4 h-56 flex items-center justify-center">
                 <span className="text-muted-foreground">Loading...</span>
             </div>
         )
     }
+
+    // Convert chartData to the format expected by the chart
+    const formattedData = chartData.map(point => ({
+      time: point.time,
+      pm25: point.value, // Using the value as PM2.5 for simplicity
+      pm10: point.value * 0.8 // Approximate PM10 as 80% of PM2.5
+    }));
 
     return (
         <div className="bg-card border border-border rounded-lg p-4">
@@ -74,7 +60,7 @@ export function AirQualityChart() {
 
             <div className="h-48">
                 <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={aqiData}>
+                    <AreaChart data={formattedData}>
                         <defs>
                             <linearGradient
                                 id="pm25Gradient"
@@ -138,7 +124,7 @@ export function AirQualityChart() {
 }
 
 export function CorrelationChart() {
-    const { correlationData, loading } = useMetrics()
+    const { correlationData, loading } = useAnalytics()
 
     if (loading || correlationData.length === 0) {
         return (
@@ -147,6 +133,26 @@ export function CorrelationChart() {
             </div>
         )
     }
+
+    // Calculate correlation factor for display
+    const calculateCorrelation = (data: {x: number, y: number}[]) => {
+      if (data.length < 2) return 0;
+      
+      const n = data.length;
+      const sumX = data.reduce((sum, point) => sum + point.x, 0);
+      const sumY = data.reduce((sum, point) => sum + point.y, 0);
+      const sumXY = data.reduce((sum, point) => sum + (point.x * point.y), 0);
+      const sumX2 = data.reduce((sum, point) => sum + (point.x * point.x), 0);
+      const sumY2 = data.reduce((sum, point) => sum + (point.y * point.y), 0);
+      
+      const numerator = n * sumXY - sumX * sumY;
+      const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+      
+      return denominator === 0 ? 0 : numerator / denominator;
+    };
+
+    const correlationFactor = calculateCorrelation(correlationData);
+    const correlationPercentage = Math.abs(Math.round(correlationFactor * 100));
 
     return (
         <div className="bg-card border border-border rounded-lg p-4">
@@ -178,7 +184,7 @@ export function CorrelationChart() {
                             }}
                         />
                         <Bar
-                            dataKey="pollutant"
+                            dataKey="y" // Using y (pollutant) as the bar value
                             fill="#1e4a6f"
                             radius={[2, 2, 0, 0]}
                         />
@@ -187,8 +193,8 @@ export function CorrelationChart() {
             </div>
 
             <div className="flex justify-between mt-2 text-[10px] text-muted-foreground">
-                <span>CORRELATION FACTOR: 0.82 (HIGH)</span>
-                <span>SAMPLE: 1,440 DATA POINTS</span>
+                <span>CORRELATION FACTOR: {correlationPercentage}% ({correlationPercentage >= 70 ? 'HIGH' : correlationPercentage >= 40 ? 'MEDIUM' : 'LOW'})</span>
+                <span>SAMPLE: {correlationData.length} DATA POINTS</span>
             </div>
         </div>
     )
@@ -207,6 +213,23 @@ const pm25HumidityData = [
 ]
 
 export function AnalyticsChart() {
+    const { correlationData, loading } = useAnalytics()
+
+    if (loading || correlationData.length === 0) {
+        return (
+            <div className="bg-card border border-border rounded-lg p-6 flex items-center justify-center">
+                <span className="text-muted-foreground">Loading...</span>
+            </div>
+        )
+    }
+
+    // Convert correlation data to the format expected by the chart
+    const formattedData = correlationData.map(point => ({
+      time: `${Math.floor(point.x / 10)}:00`, // Generate time labels based on humidity values
+      pm25: point.y,
+      humidity: point.x
+    }));
+
     return (
         <div className="bg-card border border-border rounded-lg p-6">
             <div className="flex items-center justify-between mb-2">
@@ -236,7 +259,7 @@ export function AnalyticsChart() {
 
             <div className="h-72 mt-4">
                 <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={pm25HumidityData}>
+                    <AreaChart data={formattedData}>
                         <defs>
                             <linearGradient
                                 id="pm25AreaGradient"
@@ -321,6 +344,23 @@ const scatterData = [
 ]
 
 export function ScatterPlotChart() {
+    const { correlationData, loading } = useAnalytics()
+
+    if (loading || correlationData.length === 0) {
+        return (
+            <div className="bg-card border border-border rounded-lg p-4 flex items-center justify-center">
+                <span className="text-muted-foreground">Loading...</span>
+            </div>
+        )
+    }
+
+    // Convert correlation data to scatter plot format (x: humidity, y: pollutant, z: size based on pollutant value)
+    const scatterData = correlationData.map(point => ({
+      x: point.x, // humidity
+      y: point.y, // pollutant
+      z: 50 + (point.y / 100) * 150 // size based on pollutant value (50-200 range)
+    }));
+
     return (
         <div className="bg-card border border-border rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">

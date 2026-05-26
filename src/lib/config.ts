@@ -14,13 +14,14 @@ export interface ProviderConfig {
     diagnostics: ProviderType
     inventory: ProviderType
     dataExplorer: ProviderType
+    analytics: ProviderType
 }
 
 export const providerConfig: ProviderConfig = {
     alerts: 'api',
     nodes: 'mock',
-    measurements: 'mock',
-    predictions: 'mock',
+    measurements: 'api',
+    predictions: 'api',
     users: 'mock',
     metrics: 'api',
     map: 'api',
@@ -29,7 +30,8 @@ export const providerConfig: ProviderConfig = {
     system: 'mock',
     diagnostics: 'mock',
     inventory: 'mock',
-    dataExplorer: 'mock'
+    dataExplorer: 'mock',
+    analytics: 'mock'
 }
 
 export type ProviderName = keyof ProviderConfig

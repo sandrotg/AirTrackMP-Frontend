@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react"
 import { createPredictionsProvider, PredictionsProvider, PredictionDataPoint, ProbabilityZone, InfluenceFactor, ForecastingData } from "@/lib/providers/predictions"
 import { mockPredictionData, mockProbabilityZones, mockInfluenceFactors, mockForecastingData } from "@/lib/providers/predictions/mock"
+import { getApiToken } from "@/lib/auth-token"
 
 interface UsePredictionsResult {
   predictionData: PredictionDataPoint[]
@@ -14,56 +15,57 @@ interface UsePredictionsResult {
 }
 
 export function usePredictions(): UsePredictionsResult {
-  const [predictionData, setPredictionData] = useState<PredictionDataPoint[]>(mockPredictionData)
-  const [probabilityZones, setProbabilityZones] = useState<ProbabilityZone[]>(mockProbabilityZones)
-  const [influenceFactors, setInfluenceFactors] = useState<InfluenceFactor[]>(mockInfluenceFactors)
-  const [forecastingData, setForecastingData] = useState<ForecastingData>(mockForecastingData ?? {
-    confidenceInterval: 0,
-    processingNode: "",
-    riskLevel: "",
-    aqiPrediction: 0,
-    peakPollutant: "",
-    inversionProbability: 0,
-    aiInsight: "",
-  })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
-  const provider = useMemo(() => createPredictionsProvider(), [])
+   const [predictionData, setPredictionData] = useState<PredictionDataPoint[]>(mockPredictionData)
+   const [probabilityZones, setProbabilityZones] = useState<ProbabilityZone[]>(mockProbabilityZones)
+   const [influenceFactors, setInfluenceFactors] = useState<InfluenceFactor[]>(mockInfluenceFactors)
+   const [forecastingData, setForecastingData] = useState<ForecastingData>(mockForecastingData ?? {
+     confidenceInterval: 0,
+     processingNode: "",
+     riskLevel: "",
+     aqiPrediction: 0,
+     peakPollutant: "",
+     inversionProbability: 0,
+     aiInsight: "",
+   })
+   const [loading, setLoading] = useState(false)
+   const [error, setError] = useState<Error | null>(null)
+   const provider = useMemo(() => createPredictionsProvider(), [])
+   const token = getApiToken()
 
-  useEffect(() => {
-    let mounted = true
-    
-    async function loadData() {
-      try {
-        const [predictions, zones, factors, forecast] = await Promise.all([
-          provider.getPredictionData(),
-          provider.getProbabilityZones(),
-          provider.getInfluenceFactors(),
-          provider.getForecastingData(),
-        ])
-        if (mounted) {
-          if (predictions.length > 0) setPredictionData(predictions)
-          if (zones.length > 0) setProbabilityZones(zones)
-          if (factors.length > 0) setInfluenceFactors(factors)
-          if (forecast) setForecastingData(forecast)
-        }
-      } catch (err) {
-        if (mounted) {
-          setError(err instanceof Error ? err : new Error("Failed to load predictions"))
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false)
-        }
-      }
-    }
+   useEffect(() => {
+     let mounted = true
+     
+     async function loadData() {
+       try {
+         const [predictions, zones, factors, forecast] = await Promise.all([
+           provider.getPredictionData(),
+           provider.getProbabilityZones(),
+           provider.getInfluenceFactors(),
+           provider.getForecastingData(),
+         ])
+         if (mounted) {
+           if (predictions.length > 0) setPredictionData(predictions)
+           if (zones.length > 0) setProbabilityZones(zones)
+           if (factors.length > 0) setInfluenceFactors(factors)
+           if (forecast) setForecastingData(forecast)
+         }
+       } catch (err) {
+         if (mounted) {
+           setError(err instanceof Error ? err : new Error("Failed to load predictions"))
+         }
+       } finally {
+         if (mounted) {
+           setLoading(false)
+         }
+       }
+     }
 
-    loadData()
+     loadData()
 
-    return () => {
-      mounted = false
-    }
-  }, [provider])
+     return () => {
+       mounted = false
+     }
+   }, [provider, token])
 
-  return { predictionData, probabilityZones, influenceFactors, forecastingData, loading, error }
+   return { predictionData, probabilityZones, influenceFactors, forecastingData, loading, error }
 }
