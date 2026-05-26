@@ -1,71 +1,75 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
-import { createPredictionsProvider, PredictionsProvider, PredictionDataPoint, ProbabilityZone, InfluenceFactor, ForecastingData } from "@/lib/providers/predictions"
-import { mockPredictionData, mockProbabilityZones, mockInfluenceFactors, mockForecastingData } from "@/lib/providers/predictions/mock"
+import { createPredictionsProvider, PredictionDataPoint, ProbabilityZone, InfluenceFactor, ForecastingData } from "@/lib/providers/predictions"
 import { getApiToken } from "@/lib/auth-token"
+import { showErrorToast } from "@/lib/error-handler"
+
+const defaultForecastingData: ForecastingData = {
+  confidenceInterval: 0,
+  processingNode: "",
+  riskLevel: "",
+  aqiPrediction: 0,
+  peakPollutant: "",
+  inversionProbability: 0,
+  aiInsight: "",
+}
 
 interface UsePredictionsResult {
   predictionData: PredictionDataPoint[]
   probabilityZones: ProbabilityZone[]
   influenceFactors: InfluenceFactor[]
-  forecastingData: ForecastingData | null
+  forecastingData: ForecastingData
   loading: boolean
   error: Error | null
 }
 
 export function usePredictions(): UsePredictionsResult {
-   const [predictionData, setPredictionData] = useState<PredictionDataPoint[]>(mockPredictionData)
-   const [probabilityZones, setProbabilityZones] = useState<ProbabilityZone[]>(mockProbabilityZones)
-   const [influenceFactors, setInfluenceFactors] = useState<InfluenceFactor[]>(mockInfluenceFactors)
-   const [forecastingData, setForecastingData] = useState<ForecastingData>(mockForecastingData ?? {
-     confidenceInterval: 0,
-     processingNode: "",
-     riskLevel: "",
-     aqiPrediction: 0,
-     peakPollutant: "",
-     inversionProbability: 0,
-     aiInsight: "",
-   })
-   const [loading, setLoading] = useState(false)
-   const [error, setError] = useState<Error | null>(null)
-   const provider = useMemo(() => createPredictionsProvider(), [])
-   const token = getApiToken()
+  const [predictionData, setPredictionData] = useState<PredictionDataPoint[]>([])
+  const [probabilityZones, setProbabilityZones] = useState<ProbabilityZone[]>([])
+  const [influenceFactors, setInfluenceFactors] = useState<InfluenceFactor[]>([])
+  const [forecastingData, setForecastingData] = useState<ForecastingData>(defaultForecastingData)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
+  const provider = useMemo(() => createPredictionsProvider(), [])
+  const token = getApiToken()
 
-   useEffect(() => {
-     let mounted = true
-     
-     async function loadData() {
-       try {
-         const [predictions, zones, factors, forecast] = await Promise.all([
-           provider.getPredictionData(),
-           provider.getProbabilityZones(),
-           provider.getInfluenceFactors(),
-           provider.getForecastingData(),
-         ])
-         if (mounted) {
-           if (predictions.length > 0) setPredictionData(predictions)
-           if (zones.length > 0) setProbabilityZones(zones)
-           if (factors.length > 0) setInfluenceFactors(factors)
-           if (forecast) setForecastingData(forecast)
-         }
-       } catch (err) {
-         if (mounted) {
-           setError(err instanceof Error ? err : new Error("Failed to load predictions"))
-         }
-       } finally {
-         if (mounted) {
-           setLoading(false)
-         }
-       }
-     }
+  useEffect(() => {
+    let mounted = true
 
-     loadData()
+    async function loadData() {
+      setLoading(true)
+      try {
+        const [predictions, zones, factors, forecast] = await Promise.all([
+          provider.getPredictionData(),
+          provider.getProbabilityZones(),
+          provider.getInfluenceFactors(),
+          provider.getForecastingData(),
+        ])
+        if (mounted) {
+          setPredictionData(predictions)
+          setProbabilityZones(zones)
+          setInfluenceFactors(factors)
+          setForecastingData(forecast)
+        }
+      } catch (err) {
+        if (mounted) {
+          setError(err instanceof Error ? err : new Error("Failed to load predictions"))
+          showErrorToast(err, "Failed to load predictions")
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false)
+        }
+      }
+    }
 
-     return () => {
-       mounted = false
-     }
-   }, [provider, token])
+    loadData()
 
-   return { predictionData, probabilityZones, influenceFactors, forecastingData, loading, error }
+    return () => {
+      mounted = false
+    }
+  }, [provider, token])
+
+  return { predictionData, probabilityZones, influenceFactors, forecastingData, loading, error }
 }

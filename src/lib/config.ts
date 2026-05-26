@@ -1,4 +1,4 @@
-export type ProviderType = 'mock' | 'api'
+export type ProviderType = 'api' | 'api'
 
 export interface ProviderConfig {
     alerts: ProviderType
@@ -19,19 +19,19 @@ export interface ProviderConfig {
 
 export const providerConfig: ProviderConfig = {
     alerts: 'api',
-    nodes: 'mock',
+    nodes: 'api',
     measurements: 'api',
     predictions: 'api',
-    users: 'mock',
+    users: 'api',
     metrics: 'api',
     map: 'api',
-    thresholds: 'mock',
-    emergency: 'mock',
-    system: 'mock',
-    diagnostics: 'mock',
-    inventory: 'mock',
-    dataExplorer: 'mock',
-    analytics: 'mock'
+    thresholds: 'api',
+    emergency: 'api',
+    system: 'api',
+    diagnostics: 'api',
+    inventory: 'api',
+    dataExplorer: 'api',
+    analytics: 'api'
 }
 
 export type ProviderName = keyof ProviderConfig
