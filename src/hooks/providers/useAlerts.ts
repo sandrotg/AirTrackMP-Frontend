@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { createAlertsProvider } from '@/lib/providers/alerts'
 import { AlertLog } from '@/lib/types'
 import { getApiToken } from '@/lib/auth-token'
+import { showErrorToast } from '@/lib/error-handler'
 
 interface UseAlertsResult {
     alerts: AlertLog[]
@@ -41,6 +42,7 @@ export function useAlerts(): UseAlertsResult {
                             ? err
                             : new Error('Failed to load alerts')
                     )
+                    showErrorToast(err, 'Failed to load alerts')
                 }
             } finally {
                 if (mounted) {

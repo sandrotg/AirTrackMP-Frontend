@@ -54,7 +54,13 @@ Uses `GET /api/alert` with Bearer token from `auth-token.ts`. Returns `[]` if no
 - `TokenSync`: reads `session.apiToken` → writes to `auth-token.ts` singleton
 
 ### Hooks
-- `src/hooks/providers/useAlerts.ts`, `useMetrics.ts`, `useMapNodes.ts` — consume providers via `createXxxProvider()` inside `useMemo`, fetch in `useEffect`
+- `src/hooks/providers/useAlerts.ts`, `useMetrics.ts`, `useMapNodes.ts`, `usePredictions.ts`, `useAnalytics.ts` — consume providers via `createXxxProvider()` inside `useMemo`, fetch in `useEffect`
+
+### Error system (`src/lib/error-handler.ts`)
+- Uses **sonner** (shadcn wrapper) for toast notifications
+- `<Toaster />` rendered in `src/app/layout.tsx` (inside body, after SessionProvider)
+- Every data hook shows a toast on `catch` via `showErrorToast(err, fallbackMsg)`
+- Available helpers: `showErrorToast`, `showNetworkError`, `showAuthError`, `showApiError`, `showSuccess`, `showInfo`
 
 ## Backend API
 - URL: `https://airtrackmp-backend.onrender.com` (set in `.env`)
@@ -69,3 +75,4 @@ Uses `GET /api/alert` with Bearer token from `auth-token.ts`. Returns `[]` if no
 - Some POST `/api/alert` calls fail with 500 for certain `type` values (backend bug)
 - `AUTH_URL` in `.env` points to `http://localhost:3000` — update if dev server uses a different port
 - No test framework configured yet
+- `src/lib/config.ts` `ProviderType` is `'api' | 'api'` (typo, should be `'api' | 'mock'`) — causes TS errors in all mock providers

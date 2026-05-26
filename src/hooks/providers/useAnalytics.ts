@@ -8,6 +8,7 @@ import {
     CorrelationDataPoint
 } from '@/lib/providers/analytics'
 import { getApiToken } from '@/lib/auth-token'
+import { showErrorToast } from '@/lib/error-handler'
 
 interface UseAnalyticsResult {
     analyticsData: AnalyticsData[]
@@ -60,6 +61,7 @@ export function useAnalytics(): UseAnalyticsResult {
                             ? err
                             : new Error('Failed to load analytics data')
                     )
+                    showErrorToast(err, 'Failed to load analytics data')
                 }
             } finally {
                 if (mounted) {

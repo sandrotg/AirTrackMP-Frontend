@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { createMapProvider, MapNode } from '@/lib/providers/map'
 import { getApiToken } from '@/lib/auth-token'
+import { showErrorToast } from '@/lib/error-handler'
 
 interface UseMapNodesResult {
     nodes: MapNode[]
@@ -34,6 +35,7 @@ export function useMapNodes(): UseMapNodesResult {
                             ? err
                             : new Error('Failed to load map nodes')
                     )
+                    showErrorToast(err, 'Failed to load map nodes')
                 }
             } finally {
                 if (mounted) {

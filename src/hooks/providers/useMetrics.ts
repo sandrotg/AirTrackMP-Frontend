@@ -9,6 +9,7 @@ import {
     HourlyDataPoint
 } from '@/lib/providers/metrics'
 import { getApiToken } from '@/lib/auth-token'
+import { showErrorToast } from '@/lib/error-handler'
 
 interface UseMetricsResult {
     metrics: MetricsData[]
@@ -61,6 +62,7 @@ export function useMetrics(): UseMetricsResult {
                             ? err
                             : new Error('Failed to load metrics data')
                     )
+                    showErrorToast(err, 'Failed to load metrics data')
                 }
             } finally {
                 if (mounted) {

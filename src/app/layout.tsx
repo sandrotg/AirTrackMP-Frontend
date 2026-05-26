@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 // import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import { SessionProvider } from '@/components/auth/session-provider'
+import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
 
 const _geist = Geist({ subsets: ['latin'] })
@@ -44,6 +45,7 @@ export default function RootLayout({
                         {children}
                     </SessionProvider>
                 </ThemeProvider>
+                <Toaster />
                 {/* {process.env.NODE_ENV === 'production' && <Analytics />} */}
             </body>
         </html>
