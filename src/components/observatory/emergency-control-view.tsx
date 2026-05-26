@@ -2,13 +2,8 @@
 
 import { useState } from 'react'
 import {
-    Building2,
-    Home,
-    TrafficCone,
     CheckCircle,
-    Send,
-    AlertCircle,
-    Flag
+    Send
 } from 'lucide-react'
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -384,7 +379,7 @@ export function EmergencyControlView() {
 
                     {/* Node Location Map */}
                     <div className="bg-card rounded-lg border border-border overflow-hidden">
-                        <div className="h-48 bg-gradient-to-br from-orange-900/20 to-background relative">
+                        <div className="h-48 bg-linear-to-br from-orange-900/20 to-background relative">
                             <div className="absolute inset-0 opacity-30">
                                 <svg
                                     viewBox="0 0 200 100"
