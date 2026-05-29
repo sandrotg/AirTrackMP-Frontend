@@ -53,7 +53,7 @@ export function SensorNodeManagement() {
           </div>
           <Skeleton className="h-4 w-28" />
         </div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="bg-secondary/50 rounded-lg p-3 flex items-center gap-3">
               <Skeleton className="size-10 rounded-full" />
@@ -87,7 +87,7 @@ export function SensorNodeManagement() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {sensorNodes.map((node) => {
           // Map API status to UI status for display
           const statusMap: Record<string, keyof typeof statusConfig> = {
@@ -266,7 +266,7 @@ export function FleetManager() {
             <Skeleton className="h-9 w-36 rounded-md" />
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="bg-card border border-border rounded-lg p-4">
               <Skeleton className="h-4 w-28 mb-2" />
@@ -277,7 +277,7 @@ export function FleetManager() {
             </div>
           ))}
         </div>
-        <div className="bg-card border border-border rounded-lg p-4">
+        <div className="bg-card border border-border rounded-lg p-4 overflow-x-auto">
           <div className="flex items-center justify-between mb-4">
             <Skeleton className="h-5 w-40" />
             <div className="flex gap-2">
@@ -360,7 +360,7 @@ export function FleetManager() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-lg p-4">
           <p className="text-xs text-muted-foreground mb-1">
             TOTAL ACTIVE NODES
@@ -404,7 +404,7 @@ export function FleetManager() {
       </div>
 
       {/* Main Node Detail */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-4">
           {/* Node Header */}
           <div className="bg-card border border-border rounded-lg p-4">
@@ -432,7 +432,7 @@ export function FleetManager() {
           </div>
 
           {/* Signal & Battery */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-card border border-border rounded-lg p-4">
               <p className="text-xs text-muted-foreground mb-2">
                 SIGNAL STRENGTH (RSSI)
@@ -562,7 +562,7 @@ export function FleetManager() {
       </div>
 
       {/* Fleet Table */}
-      <div className="bg-card border border-border rounded-lg p-4">
+      <div className="bg-card border border-border rounded-lg p-4 overflow-x-auto">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-foreground">
             Subordinate Fleet Nodes

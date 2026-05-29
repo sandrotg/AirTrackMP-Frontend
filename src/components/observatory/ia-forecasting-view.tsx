@@ -21,9 +21,9 @@ export function IAForecastingView() {
                     <Skeleton className="h-8 w-64 mb-2" />
                     <Skeleton className="h-4 w-96" />
                 </div>
-                <div className="grid grid-cols-12 gap-6">
-                    <div className="col-span-8 space-y-6">
-                        <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div className="col-span-12 lg:col-span-8 space-y-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <div className="bg-card rounded-lg border border-border p-6">
                                 <div className="flex items-center justify-between mb-4">
                                     <div>
@@ -51,7 +51,7 @@ export function IAForecastingView() {
                                 ))}
                             </div>
                         </div>
-                        <div className="grid grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {[1, 2, 3].map((i) => (
                                 <div key={i} className="bg-card rounded-lg border border-border p-6">
                                     <Skeleton className="h-3 w-28 mb-1" />
@@ -61,7 +61,7 @@ export function IAForecastingView() {
                             ))}
                         </div>
                     </div>
-                    <div className="col-span-4 space-y-6">
+                    <div className="col-span-12 lg:col-span-4 space-y-6">
                         <div className="bg-card rounded-lg border border-border p-6">
                             <Skeleton className="h-6 w-48 mb-4" />
                             <Skeleton className="h-4 w-24 mb-2" />
@@ -92,11 +92,11 @@ export function IAForecastingView() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-12 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 {/* Main Content - Left Side */}
-                <div className="col-span-8 space-y-6">
+                <div className="col-span-12 lg:col-span-8 space-y-6">
                     {/* Temporal Prediction Chart & Probability Matrix */}
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {/* Temporal Prediction Chart */}
                         <div className="bg-card rounded-lg border border-border p-6">
                             <div className="flex items-center justify-between mb-4">
@@ -230,7 +230,7 @@ export function IAForecastingView() {
                     </div>
 
                     {/* Bottom Row */}
-                    <div className="grid grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* Influence Factors */}
                         <div className="bg-card rounded-lg border border-border p-6">
                             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
@@ -373,7 +373,7 @@ export function IAForecastingView() {
                 </div>
 
                 {/* Right Sidebar - Early Warning System */}
-                <div className="col-span-4 space-y-6">
+                <div className="col-span-12 lg:col-span-4 space-y-6">
                     {/* Early Warning Panel */}
                     <div className="bg-card rounded-lg border border-border p-6">
                         <div className="flex items-center gap-3 mb-4">

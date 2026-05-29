@@ -23,8 +23,8 @@ export function EmergencyControlView() {
                     <Skeleton className="h-8 w-72 mb-2" />
                     <Skeleton className="h-4 w-96" />
                 </div>
-                <div className="grid grid-cols-12 gap-6">
-                    <div className="col-span-8 space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div className="col-span-12 lg:col-span-8 space-y-6">
                         <div className="bg-card rounded-lg border border-border p-6">
                             <div className="flex items-center justify-between mb-6">
                                 <div>
@@ -40,7 +40,7 @@ export function EmergencyControlView() {
                                 <Skeleton key={i} className="h-12 w-full mb-2" />
                             ))}
                         </div>
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <div className="bg-card rounded-lg border border-border p-6">
                                 <Skeleton className="h-4 w-36 mb-1" />
                                 <Skeleton className="h-5 w-48 mb-4" />
@@ -57,7 +57,7 @@ export function EmergencyControlView() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-span-4 space-y-6">
+                    <div className="col-span-12 lg:col-span-4 space-y-6">
                         <div className="bg-card rounded-lg border border-border p-6">
                             <Skeleton className="h-5 w-40 mb-6" />
                             <Skeleton className="h-16 w-full rounded-lg mb-6" />
@@ -112,9 +112,9 @@ export function EmergencyControlView() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-12 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 {/* Main Content - Left Side */}
-                <div className="col-span-8 space-y-6">
+                <div className="col-span-12 lg:col-span-8 space-y-6">
                     {/* Active Alerts Log */}
                     <div className="bg-card rounded-lg border border-border p-6">
                         <div className="flex items-center justify-between mb-6">
@@ -221,7 +221,7 @@ export function EmergencyControlView() {
                     </div>
 
                     {/* Bottom Row */}
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {/* PM Spikes vs Env Conditions */}
                         <div className="bg-card rounded-lg border border-border p-6">
                             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
@@ -313,7 +313,7 @@ export function EmergencyControlView() {
                 </div>
 
                 {/* Right Sidebar - Response Protocol */}
-                <div className="col-span-4 space-y-6">
+                <div className="col-span-12 lg:col-span-4 space-y-6">
                     <div className="bg-card rounded-lg border border-border p-6">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-lg font-semibold text-foreground uppercase tracking-wider">

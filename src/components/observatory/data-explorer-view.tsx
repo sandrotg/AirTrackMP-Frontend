@@ -62,7 +62,7 @@ export function DataExplorerView() {
                         <Skeleton className="h-3 w-64 mb-4" />
                         <Skeleton className="h-64 w-full rounded-xl" />
                     </div>
-                    <div className="grid grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                         {[1, 2, 3, 4].map((i) => (
                             <div key={i} className="bg-slate-800/40 rounded-xl border border-slate-700/50 p-5">
                                 <Skeleton className="h-3 w-24 mb-2" />
@@ -417,7 +417,7 @@ export function DataExplorerView() {
                 </div>
 
                 {/* Bottom Stats */}
-                <div className="grid grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                     <div className="bg-slate-800/40 rounded-xl border border-slate-700/50 p-5">
                         <p className="text-xs text-slate-500 uppercase mb-2">
                             AVG. PM2.5

@@ -86,7 +86,7 @@ export function MetricCardsRow() {
 
     if (loading) {
         return (
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {[1, 2, 3, 4].map((i) => (
                     <div
                         key={i}
@@ -112,7 +112,7 @@ export function MetricCardsRow() {
 
     if (metrics.length === 0) {
         return (
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {[1, 2, 3, 4].map((i) => (
                     <div
                         key={i}
@@ -132,7 +132,7 @@ export function MetricCardsRow() {
     }
 
     return (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {metrics.map((metric, index) => (
                 <MetricCard
                     key={index}
@@ -157,7 +157,7 @@ export function MetricCardsRow() {
 
 export function StatsCardsRow() {
     return (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="bg-card border border-border rounded-lg p-4">
                 <p className="text-xs text-muted-foreground mb-1">
                     TOTAL ACTIVE NODES

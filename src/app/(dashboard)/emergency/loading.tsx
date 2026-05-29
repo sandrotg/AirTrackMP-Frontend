@@ -8,8 +8,8 @@ export default function EmergencyLoading() {
                 <Skeleton className="h-8 w-72 mb-2" />
                 <Skeleton className="h-4 w-96" />
             </div>
-            <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-8 space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div className="col-span-12 lg:col-span-8 space-y-6">
                     <div className="bg-card rounded-lg border border-border p-6">
                         <div className="flex items-center justify-between mb-6">
                             <div>
@@ -25,7 +25,7 @@ export default function EmergencyLoading() {
                             <Skeleton key={i} className="h-12 w-full mb-2" />
                         ))}
                     </div>
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="bg-card rounded-lg border border-border p-6">
                             <Skeleton className="h-4 w-36 mb-1" />
                             <Skeleton className="h-5 w-48 mb-4" />
@@ -42,7 +42,7 @@ export default function EmergencyLoading() {
                         </div>
                     </div>
                 </div>
-                <div className="col-span-4 space-y-6">
+                <div className="col-span-12 lg:col-span-4 space-y-6">
                     <div className="bg-card rounded-lg border border-border p-6">
                         <Skeleton className="h-5 w-40 mb-6" />
                         <Skeleton className="h-16 w-full rounded-lg mb-6" />

@@ -16,8 +16,8 @@ export default function AnalyticsLoading() {
                     <Skeleton className="h-14 w-36 rounded-lg" />
                 </div>
             </div>
-            <div className="grid grid-cols-3 gap-6">
-                <div className="col-span-2">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="col-span-12 lg:col-span-2">
                     <div className="bg-card border border-border rounded-lg p-6">
                         <div className="flex items-center justify-between mb-2">
                             <div>
@@ -45,7 +45,7 @@ export default function AnalyticsLoading() {
                     <Skeleton className="h-20 w-full rounded-lg" />
                 </div>
             </div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {[1, 2, 3].map((i) => (
                     <div key={i} className="bg-card border border-border rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
@@ -68,7 +68,7 @@ export default function AnalyticsLoading() {
                     <Skeleton className="h-1 w-full rounded-full" />
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {[1, 2].map((i) => (
                     <div key={i} className="bg-card border border-border rounded-lg p-4 flex items-center gap-4">
                         <Skeleton className="size-12 rounded-lg shrink-0" />

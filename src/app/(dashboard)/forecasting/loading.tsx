@@ -7,9 +7,9 @@ export default function ForecastingLoading() {
                 <Skeleton className="h-8 w-64 mb-2" />
                 <Skeleton className="h-4 w-96" />
             </div>
-            <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-8 space-y-6">
-                    <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div className="col-span-12 lg:col-span-8 space-y-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div className="bg-card rounded-lg border border-border p-6">
                             <div className="flex items-center justify-between mb-4">
                                 <div>
@@ -37,7 +37,7 @@ export default function ForecastingLoading() {
                             ))}
                         </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {[1, 2, 3].map((i) => (
                             <div key={i} className="bg-card rounded-lg border border-border p-6">
                                 <Skeleton className="h-3 w-28 mb-1" />
@@ -47,7 +47,7 @@ export default function ForecastingLoading() {
                         ))}
                     </div>
                 </div>
-                <div className="col-span-4 space-y-6">
+                <div className="col-span-12 lg:col-span-4 space-y-6">
                     <div className="bg-card rounded-lg border border-border p-6">
                         <Skeleton className="h-6 w-48 mb-4" />
                         <Skeleton className="h-4 w-24 mb-2" />

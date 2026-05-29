@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 export default function AlertsLoading() {
     return (
-        <div className="flex gap-6 h-full">
+        <div className="flex flex-col lg:flex-row gap-6 h-full">
             <div className="flex-1">
                 <div className="flex items-center justify-between mb-4">
                     <div>

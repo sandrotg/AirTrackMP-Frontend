@@ -54,7 +54,7 @@ export function UserManagementView() {
                         {[1, 2, 3, 4].map((i) => (
                             <Skeleton key={i} className="h-16 w-full mb-2" />
                         ))}
-                        <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-border">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-border">
                             <Skeleton className="h-24 rounded-lg" />
                             <Skeleton className="h-24 rounded-lg" />
                         </div>
@@ -233,7 +233,7 @@ export function UserManagementView() {
                     </div>
 
                     {/* Stats */}
-                    <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-border">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-border">
                         <div className="bg-background rounded-lg p-4">
                             <p className="text-xs text-muted-foreground uppercase tracking-wider">
                                 Active Sessions

@@ -56,7 +56,7 @@ export function SystemConfigView() {
                     <div className="bg-card border border-border rounded-xl p-6">
                         <Skeleton className="h-5 w-36 mb-6" />
                         <Skeleton className="h-20 w-full mb-4" />
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <Skeleton className="h-16 rounded-lg" />
                             <Skeleton className="h-16 rounded-lg" />
                         </div>
@@ -64,7 +64,7 @@ export function SystemConfigView() {
                     </div>
                     <div className="bg-card border border-border rounded-xl p-6">
                         <Skeleton className="h-5 w-36 mb-6" />
-                        <div className="grid grid-cols-2 gap-4 mb-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                             <Skeleton className="h-32 rounded-lg" />
                             <Skeleton className="h-32 rounded-lg" />
                         </div>
@@ -271,7 +271,7 @@ export function SystemConfigView() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="bg-background rounded-lg p-4">
                                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
                                     Retries
@@ -327,7 +327,7 @@ export function SystemConfigView() {
                         </h2>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                         <div className="bg-background rounded-lg p-4">
                             <div className="flex items-center gap-2 mb-3">
                                 <Trash2 className="w-5 h-5 text-muted-foreground" />

@@ -42,14 +42,14 @@ export function InventoryView() {
                         <Skeleton className="h-5 w-40 mb-6" />
                         <div className="space-y-4">
                             <Skeleton className="h-12 w-full rounded-lg" />
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <Skeleton className="h-12 w-full rounded-lg" />
                                 <Skeleton className="h-12 w-full rounded-lg" />
                             </div>
                             <Skeleton className="h-12 w-full rounded-lg" />
                             <Skeleton className="h-11 w-full rounded-lg" />
                         </div>
-                        <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-border">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-border">
                             <Skeleton className="h-24 rounded-lg" />
                             <Skeleton className="h-24 rounded-lg" />
                         </div>
@@ -128,7 +128,7 @@ export function InventoryView() {
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className="text-xs text-muted-foreground uppercase tracking-wider">
                                     Latitude
@@ -177,7 +177,7 @@ export function InventoryView() {
                     </div>
 
                     {/* Stats */}
-                    <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-border">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-border">
                         <div className="bg-background rounded-lg p-4">
                             <p className="text-xs text-muted-foreground uppercase tracking-wider">
                                 Total Bandwidth

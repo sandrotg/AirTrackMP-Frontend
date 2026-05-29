@@ -49,7 +49,7 @@ export function ForecastingView() {
             </div>
 
             {/* Main Grid */}
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Main Chart */}
                 <div className="col-span-2">
                     <AnalyticsChart />
@@ -90,7 +90,7 @@ export function ForecastingView() {
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 mb-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
                         <div className="bg-secondary/50 rounded-lg p-3">
                             <p className="text-[10px] text-muted-foreground mb-1">
                                 PEAK POLLUTANT
@@ -120,7 +120,7 @@ export function ForecastingView() {
             </div>
 
             {/* Bottom Section */}
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {/* Scatter Plot */}
                 <ScatterPlotChart />
 
@@ -172,7 +172,7 @@ export function ForecastingView() {
             </div>
 
             {/* Bottom Cards */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="bg-card border border-border rounded-lg p-4 flex items-center gap-4">
                     <div className="p-3 bg-secondary rounded-lg">
                         <Layers className="h-6 w-6 text-muted-foreground" />

@@ -73,7 +73,7 @@ export function DiagnosticLogsView() {
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {[1, 2, 3, 4].map((i) => (
                         <div key={i} className="bg-card border border-border rounded-xl p-4">
                             <Skeleton className="h-3 w-20 mb-3" />
@@ -290,7 +290,7 @@ export function DiagnosticLogsView() {
             </div>
 
             {/* Bottom Stats */}
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="bg-card border border-border rounded-xl p-4 flex items-center justify-between">
                     <div>
                         <p className="text-xs text-muted-foreground uppercase tracking-wider">

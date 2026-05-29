@@ -11,8 +11,8 @@ export default function DashboardPage() {
     return (
         <div className="space-y-4">
             {/* Map and Alerts */}
-            <div className="grid grid-cols-3 gap-4 ">
-                <div className="col-span-2 gap-y-4 flex flex-col">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-2 gap-y-4 flex flex-col">
                     {/* Metrics Row */}
                     <MetricCardsRow />
                     <MapView />
@@ -21,7 +21,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Charts */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <AirQualityChart />
                 <CorrelationChart />
             </div>
@@ -30,10 +30,10 @@ export default function DashboardPage() {
             <SensorNodeManagement />
 
             {/* Footer Status */}
-            <div className="flex items-center justify-between py-2 px-4 bg-card border border-border rounded-lg text-xs">
-                <div className="flex items-center gap-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 py-2 px-4 bg-card border border-border rounded-lg text-xs">
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
                     <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-success" />
+                        <span className="h-2 w-2 rounded-full bg-success shrink-0" />
                         <span className="text-muted-foreground">
                             SYSTEM ENGINE: OPTIMAL
                         </span>
@@ -44,7 +44,7 @@ export default function DashboardPage() {
                         </span>
                     </div>
                 </div>
-                <div className="text-muted-foreground">
+                <div className="text-muted-foreground text-[10px] sm:text-xs">
                     CITYSCALE MONITORING SYSTEM v4.0.2 //
                     SECURE_HANDSHAKE_ESTABLISHED
                 </div>

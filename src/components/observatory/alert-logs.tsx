@@ -29,7 +29,7 @@ export function AlertLogs() {
     const { alerts, loading, selectedAlert, setSelectedAlert } = useAlerts()
 
     return (
-        <div className="flex gap-6 h-full">
+        <div className="flex flex-col lg:flex-row gap-6 h-full">
             {/* Main Table */}
             <div className="flex-1">
                 <div className="flex items-center justify-between mb-4">
@@ -55,7 +55,7 @@ export function AlertLogs() {
                     </div>
                 </div>
 
-                <div className="bg-card border border-border rounded-lg overflow-hidden">
+                <div className="bg-card border border-border rounded-lg overflow-x-auto">
                     <table className="w-full">
                         <thead>
                             <tr className="text-left text-xs text-muted-foreground border-b border-border bg-secondary/30">
