@@ -73,7 +73,7 @@ Uses `GET /api/alert` with Bearer token from `auth-token.ts`. Returns `[]` if no
 - Public endpoints: `/api/measurements`, `/api/measurements/node/{id}/latest`
 - Auth-required: `/api/alert`, `/api/nodes` (ADMIN), `/api/user`
 - Register: `POST /api/auth/register` with `{name, email, password, role}`
-- Test admin: `admin@airtrackmp.com` / `admin123`
+- Test admin: `admin@airtrackmp.com` / `Admin123!`
 
 ## Known quirks
 - Backend returns 500 instead of 401 for invalid credentials
