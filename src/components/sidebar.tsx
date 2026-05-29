@@ -24,6 +24,8 @@ import { Button } from '@/components/ui/button'
 
 interface SidebarProps {
     activeView: string
+    open: boolean
+    onClose: () => void
 }
 
 const navItems = [
@@ -47,9 +49,23 @@ const bottomItems = [
     { id: 'support', label: 'Support', icon: HelpCircle }
 ]
 
-export function Sidebar({ activeView }: SidebarProps) {
+export function Sidebar({ activeView, open, onClose }: SidebarProps) {
     return (
-        <div className="flex h-full w-56 flex-col bg-sidebar border-r border-sidebar-border">
+        <>
+            {/* Overlay for mobile */}
+            {open && (
+                <div
+                    className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+                    onClick={onClose}
+                />
+            )}
+
+            <div className={`
+                fixed inset-y-0 left-0 z-50 flex h-full w-56 flex-col bg-sidebar border-r border-sidebar-border
+                transition-transform duration-300 ease-in-out
+                lg:static lg:translate-x-0
+                ${open ? 'translate-x-0' : '-translate-x-full'}
+            `}>
             <div className="p-4 border-b border-sidebar-border">
                 <h1 className="text-primary text-sm font-bold tracking-wide">
                     GLOBAL NETWORK
@@ -64,6 +80,7 @@ export function Sidebar({ activeView }: SidebarProps) {
                     <Link
                         key={item.id}
                         href={`/${item.id}`}
+                        onClick={onClose}
                         className={cn(
                             'flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-xs font-medium transition-colors',
                             activeView === item.id
@@ -96,5 +113,6 @@ export function Sidebar({ activeView }: SidebarProps) {
                 ))}
             </div>
         </div>
+        </>
     )
 }
