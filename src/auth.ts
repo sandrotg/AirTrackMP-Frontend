@@ -69,9 +69,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
       const isLoginPage = nextUrl.pathname === "/login"
+      const isLandingPage = nextUrl.pathname === "/landing"
 
       if (isLoginPage) {
         if (isLoggedIn) return Response.redirect(new URL("/dashboard", nextUrl))
+        return true
+      }
+
+      if (isLandingPage) {
         return true
       }
 
