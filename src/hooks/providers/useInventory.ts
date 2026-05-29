@@ -15,12 +15,13 @@ interface UseInventoryResult {
 export function useInventory(): UseInventoryResult {
   const [nodes, setNodes] = useState<InventoryNode[]>([])
   const [commandHistory, setCommandHistory] = useState<CommandHistoryEntry[]>([])
-  const [loading, setLoading] = useState(true)
+  const token = getApiToken()
+  const [loading, setLoading] = useState(!!token)
   const [error, setError] = useState<Error | null>(null)
   const provider = useMemo(() => createInventoryProvider(), [])
-  const token = getApiToken()
 
   useEffect(() => {
+    if (!token) return
     let mounted = true
 
     async function loadData() {

@@ -25,12 +25,13 @@ export function useThresholds(): UseThresholdsResult {
     const [thresholdLevels, setThresholdLevels] = useState<ThresholdLevel[]>([])
     const [notificationChannels, setNotificationChannels] = useState<NotificationChannel[]>([])
     const [validationLogs, setValidationLogs] = useState<ValidationLog[]>([])
-    const [loading, setLoading] = useState(true)
+    const token = getApiToken()
+    const [loading, setLoading] = useState(!!token)
     const [error, setError] = useState<Error | null>(null)
     const provider = useMemo(() => createThresholdsProvider(), [])
-    const token = getApiToken()
 
     useEffect(() => {
+        if (!token) return
         let mounted = true
 
         async function loadData() {

@@ -24,12 +24,13 @@ export function useAnalytics(): UseAnalyticsResult {
     const [chartData, setChartData] = useState<ChartDataPoint[]>([])
     const [correlationData, setCorrelationData] = useState<CorrelationDataPoint[]>([])
     const [summary, setSummary] = useState<Record<string, number>>({})
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<Error | null>(null)
     const token = getApiToken()
+    const [loading, setLoading] = useState(!!token)
+    const [error, setError] = useState<Error | null>(null)
     const provider = useMemo(() => createAnalyticsProvider(), [])
 
     useEffect(() => {
+        if (!token) return
         let mounted = true
 
         async function loadData() {

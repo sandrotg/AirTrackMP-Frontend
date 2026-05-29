@@ -17,12 +17,13 @@ export function useSystem(): UseSystemResult {
   const [resourceData, setResourceData] = useState<ResourceDataPoint[]>([])
   const [containers, setContainers] = useState<ContainerHealth[]>([])
   const [diagnosticLogs, setDiagnosticLogs] = useState<DiagnosticLogEntry[]>([])
-  const [loading, setLoading] = useState(true)
+  const token = getApiToken()
+  const [loading, setLoading] = useState(!!token)
   const [error, setError] = useState<Error | null>(null)
   const provider = useMemo(() => createSystemProvider(), [])
-  const token = getApiToken()
 
   useEffect(() => {
+    if (!token) return
     let mounted = true
 
     async function loadData() {

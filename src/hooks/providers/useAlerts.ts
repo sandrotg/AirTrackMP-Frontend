@@ -16,13 +16,14 @@ interface UseAlertsResult {
 
 export function useAlerts(): UseAlertsResult {
     const [alerts, setAlerts] = useState<AlertLog[]>([])
-    const [loading, setLoading] = useState(true)
+    const token = getApiToken()
+    const [loading, setLoading] = useState(!!token)
     const [error, setError] = useState<Error | null>(null)
     const [selectedAlert, setSelectedAlert] = useState<AlertLog | null>(null)
     const provider = useMemo(() => createAlertsProvider(), [])
-    const token = getApiToken()
 
     useEffect(() => {
+        if (!token) return
         let mounted = true
 
         async function loadAlerts() {

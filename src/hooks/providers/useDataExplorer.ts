@@ -15,12 +15,13 @@ interface UseDataExplorerResult {
 export function useDataExplorer(): UseDataExplorerResult {
   const [weeklyData, setWeeklyData] = useState<WeeklyDataPoint[]>([])
   const [scatterData, setScatterData] = useState<ScatterDataPoint[]>([])
-  const [loading, setLoading] = useState(true)
+  const token = getApiToken()
+  const [loading, setLoading] = useState(!!token)
   const [error, setError] = useState<Error | null>(null)
   const provider = useMemo(() => createDataExplorerProvider(), [])
-  const token = getApiToken()
 
   useEffect(() => {
+    if (!token) return
     let mounted = true
 
     async function loadData() {

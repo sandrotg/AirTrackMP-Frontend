@@ -15,12 +15,13 @@ interface UseUsersResult {
 export function useUsers(): UseUsersResult {
   const [users, setUsers] = useState<UserData[]>([])
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>([])
-  const [loading, setLoading] = useState(true)
+  const token = getApiToken()
+  const [loading, setLoading] = useState(!!token)
   const [error, setError] = useState<Error | null>(null)
   const provider = useMemo(() => createUsersProvider(), [])
-  const token = getApiToken()
 
   useEffect(() => {
+    if (!token) return
     let mounted = true
 
     async function loadData() {

@@ -13,12 +13,13 @@ interface UseMapNodesResult {
 
 export function useMapNodes(): UseMapNodesResult {
     const [nodes, setNodes] = useState<MapNode[]>([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<Error | null>(null)
-    const provider = useMemo(() => createMapProvider(), [])
     const token = getApiToken()
+    const [loading, setLoading] = useState(!!token)
+    const [error, setError] = useState<Error | null>(null)
+    const provider = useMemo(() => createMapProvider(token), [token])
 
     useEffect(() => {
+        if (!token) return
         let mounted = true
 
         async function loadData() {

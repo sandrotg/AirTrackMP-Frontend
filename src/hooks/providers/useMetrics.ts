@@ -25,12 +25,13 @@ export function useMetrics(): UseMetricsResult {
     const [aqiData, setAqiData] = useState<ChartDataPoint[]>([])
     const [correlationData, setCorrelationData] = useState<CorrelationDataPoint[]>([])
     const [hourlyData, setHourlyData] = useState<HourlyDataPoint[]>([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<Error | null>(null)
     const token = getApiToken()
+    const [loading, setLoading] = useState(!!token)
+    const [error, setError] = useState<Error | null>(null)
     const provider = useMemo(() => createMetricsProvider(token), [token])
 
     useEffect(() => {
+        if (!token) return
         let mounted = true
 
         async function loadData() {
