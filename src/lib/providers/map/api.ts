@@ -1,4 +1,5 @@
 import { MapProvider, type MapNode } from "./provider"
+import { getApiToken } from '@/lib/auth-token'
 
 interface ApiMeasurement {
   id: number
@@ -29,8 +30,9 @@ export function createMapApiProvider(authToken: string | null = null): MapProvid
 
     async function fetchWithAuth(url: string): Promise<Response> {
         const headers: HeadersInit = {}
-        if (authToken && typeof window !== "undefined") {
-            headers.Authorization = `Bearer ${authToken}`
+        const token = authToken || getApiToken()
+        if (token) {
+            headers.Authorization = `Bearer ${token}`
         }
         return fetch(url, { headers })
     }

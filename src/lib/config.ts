@@ -21,7 +21,7 @@ export const providerConfig: ProviderConfig = {
     alerts: 'api',
     nodes: 'api',
     measurements: 'api',
-    predictions: 'api',
+    predictions: 'mock',
     users: 'api',
     metrics: 'api',
     map: 'api',

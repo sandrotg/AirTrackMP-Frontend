@@ -7,15 +7,15 @@ import { Eye, EyeOff, Loader2, AlertTriangle, Radio } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-const particles = Array.from({ length: 30 }, (_, i) => ({
+const PARTICLES = Array.from({ length: 30 }, (_, i) => ({
     id: i,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    size: Math.random() * 2.5 + 0.5,
-    duration: Math.random() * 18 + 12,
-    delay: Math.random() * 10,
-    driftX: (Math.random() - 0.5) * 40,
-    driftY: (Math.random() - 0.5) * 40
+    left: `${(i * 17 + 11) % 100}%`,
+    top: `${(i * 31 + 7) % 100}%`,
+    size: `${(((i * 13 + 5) % 25) + 5) / 10}px`,
+    duration: `${(((i * 19 + 3) % 18) + 12)}s`,
+    delay: `${(((i * 7 + 11) % 10))}s`,
+    driftX: `${((((i * 23 + 17) % 40) - 20))}px`,
+    driftY: `${((((i * 29 + 13) % 40) - 20))}px`,
 }))
 
 export default function LoginPage() {
@@ -40,7 +40,11 @@ export default function LoginPage() {
         })
 
         if (result?.error) {
-            setError('Credenciales inválidas')
+            const errorMap: Record<string, string> = {
+                'User not found': 'Usuario no encontrado',
+                'Invalid password': 'Contraseña incorrecta',
+            }
+            setError(errorMap[result.error] || 'Credenciales inválidas')
             setLoading(false)
             setShaking(true)
             setTimeout(() => setShaking(false), 400)
@@ -110,18 +114,18 @@ export default function LoginPage() {
                 />
 
                 {/* Floating particles */}
-                {particles.map((p) => (
+                {PARTICLES.map((p) => (
                     <div
                         key={p.id}
                         className="pointer-events-none absolute rounded-full bg-cyan-400"
                         style={{
                             left: p.left,
                             top: p.top,
-                            width: `${p.size}px`,
-                            height: `${p.size}px`,
-                            '--dx': `${p.driftX}px`,
-                            '--dy': `${p.driftY}px`,
-                            animation: `float-particle ${p.duration}s ease-in-out ${p.delay}s infinite`
+                            width: p.size,
+                            height: p.size,
+                            '--dx': p.driftX,
+                            '--dy': p.driftY,
+                            animation: `float-particle ${p.duration} ease-in-out ${p.delay} infinite`
                         } as React.CSSProperties}
                     />
                 ))}

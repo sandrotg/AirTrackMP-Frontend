@@ -28,7 +28,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           }),
         })
 
-        if (!res.ok) return null
+        if (!res.ok) {
+            const errorText = await res.text()
+            throw new Error(errorText || "Credenciales inválidas")
+        }
 
         const data = await res.json()
         const token = data.token as string

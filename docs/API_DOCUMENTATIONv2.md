@@ -1,43 +1,44 @@
-# AirTrackMP API - Documentación Completa
+# AirTrackMP API — Documentación Completa
 
 ## Índice
 
 1. [Introducción](#introducción)
 2. [Autenticación JWT](#autenticación-jwt)
-3. [Endpoints](#endpoints)
+3. [Roles](#roles)
+4. [Endpoints](#endpoints)
    - [Auth](#auth-apiauth)
    - [User](#user-apiuser)
    - [Node](#node-apinodes)
    - [Measurement](#measurement-apimeasurements)
    - [Alert](#alert-apialert)
    - [Prediction](#prediction-apiprediction)
-4. [Modelos de Datos](#modelos-de-datos)
-5. [Permisos por Endpoint](#permisos-por-endpoint)
+5. [Modelos de Datos](#modelos-de-datos)
+6. [Permisos por Endpoint](#permisos-por-endpoint)
+7. [Simulador IoT](#simulador-iot)
+8. [Códigos de Respuesta HTTP](#códigos-de-respuesta-http)
+9. [Formato de Fechas](#formato-de-fechas)
 
 ---
 
 ## Introducción
 
-API RESTful para el sistema de monitoreo de calidad del aire AirTrackMP. Recopila y procesa datos de material particulado (PM2.5/PM10) de sensores IoT.
+API RESTful para el sistema de monitoreo de calidad del aire **AirTrackMP**. Recopila y procesa datos de material particulado (PM2.5/PM10) de sensores IoT usando una arquitectura basada en eventos con Kafka.
 
 **URL Base**: `http://localhost:8080`
 
 **Tech Stack**:
-- Spring Boot 4.0.5 / Java 21
-- Spring Security + JWT
-- PostgreSQL
+- Spring Boot 4.0.5 / Java 21, Spring Security + JWT, PostgreSQL, Kafka
+- Servicio ML: Flask + scikit-learn (`ml-service/`, puerto `5000`)
 
 ---
 
 ## Autenticación JWT
 
-### Flujo de Autenticación
+### Flujo
 
-1. **Registro**: `POST /api/auth/register` → Retorna JWT token
-2. **Login**: `POST /api/auth/login` → Retorna JWT token
-3. **Uso**: Incluir header `Authorization: Bearer <token>` en requests protegidos
-
-### Header de Autorización
+1. **Registro**: `POST /api/auth/register` → Retorna JWT
+2. **Login**: `POST /api/auth/login` → Retorna JWT
+3. **Uso**: Header `Authorization: Bearer <token>` en requests protegidos
 
 ```http
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
@@ -46,8 +47,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ### Características del Token
 
 - **Duración**: 24 horas (86400000 ms)
-- **Contenido**: Username (email) y role
+- **Contenido**: email (username) y role
 - **Algoritmo**: HS256
+
+---
+
+## Roles
+
+| Rol | Descripción |
+|-----|-------------|
+| `USER` | Usuario regular con acceso de lectura |
+| `NODE` | Nodo IoT — solo puede crear mediciones |
+| `ADMIN` | Administración completa del sistema |
+
+- `USER` y `ADMIN` se crean vía `POST /api/auth/register`
+- `NODE` se crea exclusivamente vía `POST /api/auth/register-node` (requiere `ADMIN`)
 
 ---
 
@@ -55,9 +69,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ### Auth (`/api/auth`)
 
+---
+
 #### POST /api/auth/register
 
-Registrar un nuevo usuario.
+Registrar un nuevo usuario (`USER` o `ADMIN`).
 
 **Requiere**: Público
 
@@ -78,7 +94,9 @@ Registrar un nuevo usuario.
 }
 ```
 
-**Roles disponibles**: `USER`, `ADMIN`
+**Notas**:
+- El rol `NODE` es rechazado — debe usarse `/api/auth/register-node`
+- Si el email ya existe retorna error
 
 ---
 
@@ -104,16 +122,44 @@ Iniciar sesión.
 ```
 
 **Errores**:
-- `User not found` - Email no registrado
-- `Invalid password` - Contraseña incorrecta
+- `User not found` — Email no registrado
+- `Invalid password` — Contraseña incorrecta
+
+---
+
+#### POST /api/auth/register-node
+
+Registrar un usuario con rol `NODE` (solo para sensores IoT).
+
+**Requiere**: `ADMIN`
+
+**Request**:
+```json
+{
+  "name": "Node-001-Sensor",
+  "email": "node001@airtrackmp.com",
+  "password": "nodePassword123"
+}
+```
+
+**Response** (200):
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+**Nota**: El rol se fuerza a `NODE` ignorando cualquier valor enviado en `role`.
 
 ---
 
 ### User (`/api/user`)
 
+---
+
 #### POST /api/user
 
-Crear usuario.
+Crear un nuevo usuario.
 
 **Requiere**: Autenticado
 
@@ -220,7 +266,7 @@ Eliminar usuario (soft delete).
 **Requiere**: Autenticado
 
 **Response** (200):
-```json
+```
 "User deleted successfully"
 ```
 
@@ -228,11 +274,13 @@ Eliminar usuario (soft delete).
 
 ### Node (`/api/nodes`)
 
+---
+
 #### POST /api/nodes
 
-Crear nodo IoT.
+Crear un nodo IoT.
 
-**Requiere**: ADMIN
+**Requiere**: `ADMIN`
 
 **Request**:
 ```json
@@ -267,7 +315,7 @@ Crear nodo IoT.
 
 Listar todos los nodos.
 
-**Requiere**: ADMIN
+**Requiere**: `ADMIN`
 
 **Response** (200):
 ```json
@@ -287,33 +335,11 @@ Listar todos los nodos.
 
 ---
 
-#### GET /api/nodes/{nodeId}
-
-Obtener nodo por ID.
-
-**Requiere**: ADMIN
-
-**Response** (200):
-```json
-{
-  "id": 1,
-  "name": "Node-001",
-  "location": "Zona Centro",
-  "latitude": 19.4326,
-  "longitude": -99.1332,
-  "status": "ACTIVE",
-  "deleted": false,
-  "createdAt": "2026-05-17T12:00:00"
-}
-```
-
----
-
 #### PUT /api/nodes/{nodeId}
 
 Actualizar nodo.
 
-**Requiere**: ADMIN
+**Requiere**: `ADMIN`
 
 **Request**:
 ```json
@@ -346,7 +372,7 @@ Actualizar nodo.
 
 Eliminar nodo (soft delete).
 
-**Requiere**: ADMIN
+**Requiere**: `ADMIN`
 
 **Response** (200):
 ```json
@@ -366,11 +392,13 @@ Eliminar nodo (soft delete).
 
 ### Measurement (`/api/measurements`)
 
+---
+
 #### POST /api/measurements
 
-Crear medición.
+Encolar una nueva medición (procesada asincrónicamente vía Kafka).
 
-**Requiere**: Público
+**Requiere**: `NODE`
 
 **Request**:
 ```json
@@ -384,37 +412,20 @@ Crear medición.
 }
 ```
 
-**Response** (200):
-```json
-{
-  "id": 1,
-  "pm25": 25.5,
-  "pm10": 45.0,
-  "temperature": 22.5,
-  "humidity": 65.0,
-  "recordedAt": "2026-05-17T14:30:00",
-  "node": {
-    "id": 1,
-    "name": "Node-001",
-    "location": "Zona Centro",
-    "latitude": 19.4326,
-    "longitude": -99.1332,
-    "status": "ACTIVE",
-    "deleted": false,
-    "createdAt": "2026-05-17T12:00:00"
-  }
-}
+**Response** (202):
+```
+"Measurement queued successfully"
 ```
 
-**Nota**: El campo `recordedAt` es opcional. Si no se envía, se usa la fecha/hora actual.
+**Nota**: `recordedAt` es opcional — si se omite se usa la fecha/hora actual. El endpoint retorna inmediatamente; la persistencia ocurre en el consumidor Kafka.
 
 ---
 
 #### POST /api/measurements/bulk
 
-Crear múltiples mediciones.
+Encolar múltiples mediciones.
 
-**Requiere**: Público
+**Requiere**: `NODE`
 
 **Request**:
 ```json
@@ -434,50 +445,49 @@ Crear múltiples mediciones.
     "temperature": 22.0,
     "humidity": 62.0,
     "recordedAt": "2026-05-17T14:15:00"
-  },
-  {
-    "nodeId": 1,
-    "pm25": 24.0,
-    "pm10": 44.0,
-    "temperature": 23.0,
-    "humidity": 64.0,
-    "recordedAt": "2026-05-17T14:30:00"
   }
 ]
 ```
 
-**Response** (200):
+**Response** (202):
+```
+"Measurements queued"
+```
+
+---
+
+#### POST /api/measurements/bulk/{nodeId}
+
+Encolar múltiples mediciones para un nodo específico (el `nodeId` se toma del path).
+
+**Requiere**: `NODE`
+
+**Request**:
 ```json
 [
   {
-    "id": 1,
     "pm25": 20.0,
     "pm10": 40.0,
     "temperature": 21.0,
     "humidity": 60.0,
-    "recordedAt": "2026-05-17T14:00:00",
-    "node": { ... }
+    "recordedAt": "2026-05-17T14:00:00"
   },
   {
-    "id": 2,
     "pm25": 22.0,
     "pm10": 42.0,
     "temperature": 22.0,
     "humidity": 62.0,
-    "recordedAt": "2026-05-17T14:15:00",
-    "node": { ... }
-  },
-  {
-    "id": 3,
-    "pm25": 24.0,
-    "pm10": 44.0,
-    "temperature": 23.0,
-    "humidity": 64.0,
-    "recordedAt": "2026-05-17T14:30:00",
-    "node": { ... }
+    "recordedAt": "2026-05-17T14:15:00"
   }
 ]
 ```
+
+**Response** (202):
+```
+"Measurements queued"
+```
+
+**Nota**: A diferencia de `/bulk`, este endpoint no requiere `nodeId` en cada item — se hereda del path.
 
 ---
 
@@ -485,7 +495,7 @@ Crear múltiples mediciones.
 
 Listar todas las mediciones.
 
-**Requiere**: Público
+**Requiere**: Autenticado
 
 **Response** (200):
 ```json
@@ -497,7 +507,16 @@ Listar todas las mediciones.
     "temperature": 22.5,
     "humidity": 65.0,
     "recordedAt": "2026-05-17T14:30:00",
-    "node": { ... }
+    "node": {
+      "id": 1,
+      "name": "Node-001",
+      "location": "Zona Centro",
+      "latitude": 19.4326,
+      "longitude": -99.1332,
+      "status": "ACTIVE",
+      "deleted": false,
+      "createdAt": "2026-05-17T12:00:00"
+    }
   }
 ]
 ```
@@ -506,9 +525,9 @@ Listar todas las mediciones.
 
 #### GET /api/measurements/node/{nodeId}/latest
 
-Obtener últimas mediciones de un nodo.
+Obtener las últimas mediciones de un nodo.
 
-**Requiere**: Público
+**Requiere**: Autenticado
 
 **Response** (200):
 ```json
@@ -538,15 +557,15 @@ Obtener últimas mediciones de un nodo.
 
 #### GET /api/measurements/node/{nodeId}
 
-Obtener mediciones de un nodo con filtro de fecha.
+Obtener mediciones de un nodo con filtro opcional de fechas.
 
-**Requiere**: Público
+**Requiere**: Autenticado
 
 **Parámetros Query**:
 | Param | Tipo | Requerido | Descripción |
 |-------|------|-----------|-------------|
-| from | String | No | Fecha inicio (ISO 8601) |
-| to | String | No | Fecha fin (ISO 8601) |
+| from | String (ISO 8601) | No | Fecha inicio |
+| to | String (ISO 8601) | No | Fecha fin |
 
 **Ejemplo**:
 ```
@@ -568,20 +587,22 @@ GET /api/measurements/node/1?from=2026-05-17T14:00:00&to=2026-05-17T15:00:00
 ]
 ```
 
+**Nota**: Sin `from`/`to` retorna todas las mediciones del nodo.
+
 ---
 
 #### GET /api/measurements/node/{nodeId}/average
 
 Obtener promedios agrupados por período.
 
-**Requiere**: Público
+**Requiere**: Autenticado
 
 **Parámetros Query**:
 | Param | Tipo | Requerido | Descripción |
 |-------|------|-----------|-------------|
-| from | String | Sí | Fecha inicio (ISO 8601) |
-| to | String | Sí | Fecha fin (ISO 8601) |
-| groupBy | String | Sí | Grupo: `hour`, `day`, `minute` |
+| from | String (ISO 8601) | Sí | Fecha inicio |
+| to | String (ISO 8601) | Sí | Fecha fin |
+| groupBy | String | Sí | Agrupación: `hour`, `day`, `minute` |
 
 **Ejemplo**:
 ```
@@ -612,11 +633,13 @@ GET /api/measurements/node/1/average?from=2026-05-17T10:00:00&to=2026-05-17T18:0
 
 ### Alert (`/api/alert`)
 
+---
+
 #### POST /api/alert
 
-Crear alerta.
+Crear una alerta manualmente.
 
-**Requiere**: ADMIN
+**Requiere**: `ADMIN`
 
 **Request**:
 ```json
@@ -640,6 +663,8 @@ Crear alerta.
   "measurement": { ... }
 }
 ```
+
+**Nota**: Las alertas también se generan automáticamente desde el consumidor Kafka cuando una medición supera umbrales de riesgo (ver `RiskLevelCalculator`).
 
 ---
 
@@ -668,7 +693,7 @@ Listar todas las alertas.
 
 #### GET /api/alert/node/{nodeId}
 
-Obtener alertas de un nodo.
+Obtener alertas de un nodo específico.
 
 **Requiere**: Autenticado
 
@@ -691,7 +716,7 @@ Obtener alertas de un nodo.
 
 #### GET /api/alert/measurement/{measurementId}
 
-Obtener alerta por medición.
+Obtener la alerta asociada a una medición.
 
 **Requiere**: Autenticado
 
@@ -712,7 +737,7 @@ Obtener alerta por medición.
 
 #### PUT /api/alert/{alertId}
 
-Actualizar alerta.
+Actualizar una alerta.
 
 **Requiere**: Autenticado
 
@@ -748,7 +773,7 @@ Eliminar alerta.
 **Requiere**: Autenticado
 
 **Response** (200):
-```json
+```
 "Alert deleted successfully"
 ```
 
@@ -756,9 +781,11 @@ Eliminar alerta.
 
 ### Prediction (`/api/prediction`)
 
+---
+
 #### POST /api/prediction
 
-Crear predicción.
+Crear una predicción manualmente.
 
 **Requiere**: Autenticado
 
@@ -787,6 +814,29 @@ Crear predicción.
 ```
 
 **Niveles de riesgo**: `LOW`, `MODERATE`, `HIGH`, `CRITICAL`
+
+---
+
+#### POST /api/prediction/generate/node/{nodeId}
+
+Generar una predicción automática desde la última medición del nodo usando el servicio ML.
+
+**Requiere**: Autenticado
+
+**Response** (200):
+```json
+{
+  "id": 1,
+  "predictedPm25": 28.5,
+  "predictedPm10": 50.2,
+  "riskLevel": "MODERATE",
+  "predictionTime": "2026-05-18T10:00:00",
+  "createdAt": "2026-05-17T16:00:00",
+  "node": { ... }
+}
+```
+
+**Nota**: Este endpoint consulta el servicio ML (`/predict`) con la última medición del nodo, calcula el nivel de riesgo y persiste la predicción.
 
 ---
 
@@ -908,12 +958,10 @@ Eliminar predicción.
 | id | Integer | ID único |
 | name | String | Nombre del usuario |
 | email | String | Email (usado como username) |
-| password | String | Contraseña encriptada (BCrypt) |
-| role | String | Rol: `USER`, `ADMIN` |
+| password | String | Contraseña encriptada (BCrypt) — oculto en respuestas |
+| role | String | Rol: `USER`, `ADMIN`, `NODE` |
 | deleted | Boolean | Soft delete flag |
 | createdAt | LocalDateTime | Fecha de creación |
-
----
 
 ### Node
 
@@ -924,11 +972,9 @@ Eliminar predicción.
 | location | String | Ubicación textual |
 | latitude | Float | Latitud geográfica |
 | longitude | Float | Longitud geográfica |
-| status | Enum | ACTIVE, INACTIVE, MAINTENANCE, OFFLINE, CALIBRATION |
+| status | Enum | `ACTIVE`, `INACTIVE`, `MAINTENANCE`, `OFFLINE`, `CALIBRATION` |
 | deleted | Boolean | Soft delete flag |
 | createdAt | LocalDateTime | Fecha de creación |
-
----
 
 ### Measurement
 
@@ -940,23 +986,19 @@ Eliminar predicción.
 | temperature | Float | Temperatura (°C) |
 | humidity | Float | Humedad relativa (%) |
 | recordedAt | LocalDateTime | Fecha/hora de la medición |
-| node | Node | Nodo que generó la medición |
-
----
+| node | Node | Nodo que generó la medición (objeto completo) |
 
 ### Alert
 
 | Campo | Tipo | Descripción |
 |-------|------|-------------|
 | id | Integer | ID único |
-| type | String | Tipo de alerta |
+| type | String | Tipo de alerta (ej. `PM25_HIGH`, `PM25_CRITICAL`) |
 | message | String | Mensaje descriptivo |
 | deleted | Boolean | Soft delete flag |
 | createdAt | LocalDateTime | Fecha de creación |
-| node | Node | Nodo asociado |
-| measurement | Measurement | Medición que generó la alerta |
-
----
+| node | Node | Nodo asociado (objeto completo) |
+| measurement | Measurement | Medición que generó la alerta (objeto completo) |
 
 ### Prediction
 
@@ -965,51 +1007,53 @@ Eliminar predicción.
 | id | Integer | ID único |
 | predictedPm25 | Float | Predicción PM2.5 (µg/m³) |
 | predictedPm10 | Float | Predicción PM10 (µg/m³) |
-| riskLevel | String | Nivel de riesgo: LOW, MODERATE, HIGH, CRITICAL |
+| riskLevel | String | Nivel de riesgo: `LOW`, `MODERATE`, `HIGH`, `CRITICAL` |
 | predictionTime | LocalDateTime | Hora de la predicción |
-| createdAt | LocalDateTime | Fecha de creación |
-| node | Node | Nodo asociado |
+| createdAt | LocalDateTime | Fecha de creación del registro |
+| node | Node | Nodo asociado (objeto completo) |
 
 ---
 
 ## Permisos por Endpoint
 
-| Endpoint | Público | Autenticado | ADMIN |
-|----------|---------|-------------|-------|
-| POST /api/auth/register | ✓ | | |
-| POST /api/auth/login | ✓ | | |
-| GET /api/user | | ✓ | |
-| POST /api/user | | ✓ | |
-| GET /api/user/{id} | | ✓ | |
-| PUT /api/user/{id} | | ✓ | |
-| DELETE /api/user/{id} | | ✓ | |
-| GET /api/nodes | | | ✓ |
-| POST /api/nodes | | | ✓ |
-| GET /api/nodes/{id} | | | ✓ |
-| PUT /api/nodes/{id} | | | ✓ |
-| PUT /api/nodes/{id}/delete | | | ✓ |
-| GET /api/measurements | ✓ | | |
-| POST /api/measurements | ✓ | | |
-| POST /api/measurements/bulk | ✓ | | |
-| GET /api/measurements/node/{id}/latest | ✓ | | |
-| GET /api/measurements/node/{id} | ✓ | | |
-| GET /api/measurements/node/{id}/average | ✓ | | |
-| GET /api/alert | | ✓ | |
-| POST /api/alert | | | ✓ |
-| GET /api/alert/node/{id} | | ✓ | |
-| GET /api/alert/measurement/{id} | | ✓ | |
-| PUT /api/alert/{id} | | ✓ | |
-| DELETE /api/alert/{id} | | ✓ | |
-| GET /api/prediction | | ✓ | |
-| POST /api/prediction | | ✓ | |
-| GET /api/prediction/node/{id} | | ✓ | |
-| GET /api/prediction/{id} | | ✓ | |
-| PUT /api/prediction/{id} | | ✓ | |
-| DELETE /api/prediction/{id} | | ✓ | |
+| Endpoint | Público | Autenticado | NODE | ADMIN |
+|----------|---------|-------------|------|-------|
+| POST /api/auth/register | ✓ | | | |
+| POST /api/auth/login | ✓ | | | |
+| POST /api/auth/register-node | | | | ✓ |
+| POST /api/user | | ✓ | | |
+| GET /api/user | | ✓ | | |
+| GET /api/user/{userId} | | ✓ | | |
+| PUT /api/user/{userId} | | ✓ | | |
+| DELETE /api/user/{userId} | | ✓ | | |
+| POST /api/nodes | | | | ✓ |
+| GET /api/nodes | | | | ✓ |
+| PUT /api/nodes/{nodeId} | | | | ✓ |
+| PUT /api/nodes/{nodeId}/delete | | | | ✓ |
+| POST /api/measurements | | | ✓ | |
+| POST /api/measurements/bulk | | | ✓ | |
+| POST /api/measurements/bulk/{nodeId} | | | ✓ | |
+| GET /api/measurements | | ✓ | | |
+| GET /api/measurements/node/{nodeId}/latest | | ✓ | | |
+| GET /api/measurements/node/{nodeId} | | ✓ | | |
+| GET /api/measurements/node/{nodeId}/average | | ✓ | | |
+| POST /api/alert | | | | ✓ |
+| GET /api/alert | | ✓ | | |
+| GET /api/alert/node/{nodeId} | | ✓ | | |
+| GET /api/alert/measurement/{measurementId} | | ✓ | | |
+| PUT /api/alert/{alertId} | | ✓ | | |
+| DELETE /api/alert/{alertId} | | ✓ | | |
+| POST /api/prediction | | ✓ | | |
+| POST /api/prediction/generate/node/{nodeId} | | ✓ | | |
+| GET /api/prediction | | ✓ | | |
+| GET /api/prediction/node/{nodeId} | | ✓ | | |
+| GET /api/prediction/{predictionId} | | ✓ | | |
+| PUT /api/prediction/{predictionId} | | ✓ | | |
+| DELETE /api/prediction/{predictionId} | | ✓ | | |
 
 ---
 
-## Ejemplo: Uso del Script Python para IoT
+## Simulador IoT
 
 El archivo `Node Simulation/node.py` permite simular un nodo IoT enviando datos a la API.
 
@@ -1031,14 +1075,16 @@ python node.py
 ### Output esperado
 
 ```
-Sent: {'pm10': 11.23, 'pm25': 13.45, 'temperature': 29.12, 'humidity': 64.34} | Status: 200
+Sent: {'pm10': 11.23, 'pm25': 13.45, 'temperature': 29.12, 'humidity': 64.34} | Status: 202
 ```
 
 El script envía datos cada 10 segundos con valores que varían ligeramente:
-- PM2.5: 0 - 500 µg/m³
-- PM10: 0 - 500 µg/m³
-- Temperatura: -20 - 50 °C
-- Humedad: 0 - 100 %
+- PM2.5: 0–500 µg/m³
+- PM10: 0–500 µg/m³
+- Temperatura: −20–50 °C
+- Humedad: 0–100 %
+
+**Nota**: El simulador requiere autenticación. Usar un token JWT con rol `NODE` en el header `Authorization`.
 
 ---
 
@@ -1046,14 +1092,15 @@ El script envía datos cada 10 segundos con valores que varían ligeramente:
 
 | Código | Descripción |
 |--------|-------------|
-| 200 | OK - Request exitosa |
-| 201 | Created - Recurso creado |
-| 204 | No Content - Delete exitoso |
-| 400 | Bad Request - Datos inválidos |
-| 401 | Unauthorized - Token inválido o ausente |
-| 403 | Forbidden - Sin permisos |
-| 404 | Not Found - Recurso no existe |
-| 500 | Internal Server Error - Error del servidor |
+| 200 | OK — Request exitosa |
+| 201 | Created — Recurso creado |
+| 202 | Accepted — Request encolada (procesamiento asíncrono) |
+| 204 | No Content — Delete exitoso |
+| 400 | Bad Request — Datos inválidos |
+| 401 | Unauthorized — Token inválido o ausente |
+| 403 | Forbidden — Sin permisos |
+| 404 | Not Found — Recurso no existe |
+| 500 | Internal Server Error — Error del servidor |
 
 ---
 
